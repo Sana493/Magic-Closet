@@ -1,77 +1,1254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fairycore Sustainable Fashion</title>
-  <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Closet ✨ Enchanted Sustainable Fashion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Petit+Formal+Script&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blush: #f5d6e0;
+    --lavender: #dcd3f0;
+    --mint: #c8ead8;
+    --butter: #fdf0c2;
+    --sky: #cde8f5;
+    --rose: #e8a0b8;
+    --violet: #9b7fc4;
+    --sage: #7ab89a;
+    --gold: #c9a84c;
+    --ink: #2d1e3a;
+    --cream: #fdf8f2;
+    --white: #ffffff;
+    --shadow: rgba(45,30,58,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ── Sparkle cursor ─────────────────────────────── */
+  .cursor-sparkle {
+    position: fixed; pointer-events: none; z-index: 9999;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.8) 0%, transparent 70%);
+    transform: translate(-50%,-50%);
+    transition: transform 0.1s;
+  }
+
+  /* ── Floating particles ──────────────────────────── */
+  .particles { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:hidden; }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0;
+    animation: float-up linear infinite;
+  }
+
+  @keyframes float-up {
+    0%   { opacity:0; transform: translateY(0) rotate(0deg) scale(0); }
+    10%  { opacity:0.7; }
+    90%  { opacity:0.3; }
+    100% { opacity:0; transform: translateY(-100vh) rotate(720deg) scale(1.5); }
+  }
+
+  /* ── Nav ─────────────────────────────────────────── */
+  nav {
+    position: fixed; top:0; width:100%; z-index:1000;
+    background: rgba(253,248,242,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding: 0 2rem;
+    display: flex; align-items:center; justify-content:space-between;
+    height: 72px;
+  }
+  .nav-logo {
+    font-family: 'Petit Formal Script', cursive;
+    font-size: 1.8rem;
+    color: var(--violet);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display:flex; gap:2rem; list-style:none; }
+  .nav-links a {
+    text-decoration:none; color:var(--ink); font-weight:400; font-size:0.85rem;
+    letter-spacing:0.08em; text-transform:uppercase;
+    position:relative; padding-bottom:2px;
+    transition: color 0.3s;
+  }
+  .nav-links a::after {
+    content:''; position:absolute; bottom:0; left:0;
+    width:0; height:1px; background:var(--gold);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover { color:var(--violet); }
+  .nav-links a:hover::after { width:100%; }
+  .nav-actions { display:flex; gap:1rem; align-items:center; }
+  .nav-icon { background:none; border:none; cursor:pointer; font-size:1.2rem; color:var(--ink); transition:color 0.3s; }
+  .nav-icon:hover { color:var(--violet); }
+  .cart-btn {
+    background: linear-gradient(135deg, var(--violet), var(--rose));
+    color:white; border:none; padding:0.5rem 1.2rem;
+    border-radius:50px; cursor:pointer; font-family:'Jost',sans-serif;
+    font-size:0.8rem; font-weight:500; letter-spacing:0.05em;
+    transition: all 0.3s; box-shadow: 0 4px 15px rgba(155,127,196,0.3);
+  }
+  .cart-btn:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(155,127,196,0.4); }
+
+  /* ── Hero ─────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items:center; justify-content:center;
+    position: relative; overflow:hidden;
+    background: radial-gradient(ellipse at 20% 50%, #f5d6e0 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, #dcd3f0 0%, transparent 50%),
+                radial-gradient(ellipse at 60% 80%, #c8ead8 0%, transparent 50%),
+                linear-gradient(160deg, #fdf8f2 0%, #fdf0f5 100%);
+    padding-top: 72px;
+  }
+
+  .hero-decorations { position:absolute; inset:0; pointer-events:none; }
+  .deco-circle {
+    position:absolute; border-radius:50%;
+    animation: drift 8s ease-in-out infinite;
+  }
+  .deco-circle:nth-child(1) { width:400px; height:400px; top:-100px; right:-100px; background:radial-gradient(circle, rgba(220,211,240,0.4) 0%, transparent 70%); animation-delay:0s; }
+  .deco-circle:nth-child(2) { width:300px; height:300px; bottom:-50px; left:-80px; background:radial-gradient(circle, rgba(200,234,216,0.4) 0%, transparent 70%); animation-delay:2s; }
+  .deco-circle:nth-child(3) { width:200px; height:200px; top:30%; left:10%; background:radial-gradient(circle, rgba(245,214,224,0.5) 0%, transparent 70%); animation-delay:4s; }
+
+  @keyframes drift {
+    0%,100% { transform:translate(0,0) scale(1); }
+    33% { transform:translate(20px,-20px) scale(1.05); }
+    66% { transform:translate(-10px,15px) scale(0.95); }
+  }
+
+  .hero-content {
+    text-align:center; z-index:10; max-width:800px; padding:2rem;
+    animation: fade-in-up 1s ease both;
+  }
+
+  @keyframes fade-in-up {
+    from { opacity:0; transform:translateY(40px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  .hero-eyebrow {
+    font-family:'Jost',sans-serif; font-weight:300;
+    font-size:0.75rem; letter-spacing:0.25em; text-transform:uppercase;
+    color:var(--violet); margin-bottom:1rem;
+    animation: fade-in-up 1s 0.2s ease both;
+  }
+  .hero-title {
+    font-family:'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    line-height: 1.05; font-weight:300;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+    animation: fade-in-up 1s 0.4s ease both;
+  }
+  .hero-title em { color:var(--violet); font-style:italic; }
+  .hero-title .gold { color:var(--gold); }
+
+  .hero-sub {
+    font-size:1.05rem; font-weight:300; line-height:1.8;
+    color: rgba(45,30,58,0.65); max-width:520px; margin:0 auto 2.5rem;
+    animation: fade-in-up 1s 0.6s ease both;
+  }
+
+  .hero-buttons {
+    display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;
+    animation: fade-in-up 1s 0.8s ease both;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--violet) 0%, #c17aab 100%);
+    color:white; border:none; padding:0.9rem 2.5rem;
+    border-radius:50px; cursor:pointer; font-family:'Jost',sans-serif;
+    font-size:0.9rem; font-weight:500; letter-spacing:0.06em;
+    text-decoration:none; display:inline-flex; align-items:center; gap:0.5rem;
+    transition:all 0.3s; box-shadow:0 8px 30px rgba(155,127,196,0.4);
+  }
+  .btn-primary:hover { transform:translateY(-3px); box-shadow:0 12px 40px rgba(155,127,196,0.5); }
+  .btn-secondary {
+    background:transparent; color:var(--ink);
+    border:1.5px solid rgba(45,30,58,0.2);
+    padding:0.9rem 2.5rem; border-radius:50px;
+    cursor:pointer; font-family:'Jost',sans-serif;
+    font-size:0.9rem; font-weight:400; letter-spacing:0.06em;
+    text-decoration:none; display:inline-flex; align-items:center; gap:0.5rem;
+    transition:all 0.3s;
+  }
+  .btn-secondary:hover { border-color:var(--violet); color:var(--violet); transform:translateY(-3px); }
+
+  .hero-stats {
+    display:flex; justify-content:center; gap:3rem; margin-top:4rem; flex-wrap:wrap;
+    animation: fade-in-up 1s 1s ease both;
+  }
+  .stat { text-align:center; }
+  .stat-num {
+    font-family:'Cormorant Garamond',serif; font-size:2.2rem; font-weight:600; color:var(--violet);
+    display:block;
+  }
+  .stat-label { font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(45,30,58,0.5); }
+
+  .scroll-indicator {
+    position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+    color:rgba(45,30,58,0.4); font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase;
+    animation: bounce 2s ease-in-out infinite;
+  }
+  .scroll-line { width:1px; height:40px; background:linear-gradient(to bottom, var(--violet), transparent); }
+
+  @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+  /* ── Section commons ────────────────────────────── */
+  section { position:relative; z-index:1; }
+  .section-header { text-align:center; margin-bottom:4rem; }
+  .section-eyebrow {
+    font-size:0.7rem; letter-spacing:0.3em; text-transform:uppercase;
+    color:var(--violet); margin-bottom:0.75rem; display:block;
+  }
+  .section-title {
+    font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4vw,3rem);
+    font-weight:300; color:var(--ink); line-height:1.2;
+  }
+  .section-title em { color:var(--violet); font-style:italic; }
+  .section-divider {
+    width:60px; height:2px; margin:1rem auto 0;
+    background:linear-gradient(to right, var(--rose), var(--gold));
+    border-radius:2px;
+  }
+
+  /* ── Collections ─────────────────────────────────── */
+  .collections {
+    padding: 8rem 2rem;
+    background: linear-gradient(180deg, var(--cream) 0%, #fef4f8 50%, var(--cream) 100%);
+  }
+
+  .collections-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem; max-width: 1200px; margin:0 auto;
+  }
+
+  .collection-card {
+    position:relative; border-radius:24px; overflow:hidden;
+    cursor:pointer; group:true;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1),
+                box-shadow 0.4s ease;
+    box-shadow: 0 4px 30px var(--shadow);
+  }
+  .collection-card:hover {
+    transform:translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(45,30,58,0.18);
+  }
+  .collection-card:nth-child(1) { grid-row: span 2; }
+  .collection-card:nth-child(4) { grid-row: span 2; }
+
+  .card-visual {
+    width:100%; aspect-ratio:3/4;
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+    font-size:5rem;
+  }
+  .collection-card:nth-child(1) .card-visual { aspect-ratio: auto; height:100%; min-height:480px; }
+  .collection-card:nth-child(4) .card-visual { aspect-ratio: auto; height:100%; min-height:480px; }
+
+  /* Individual card backgrounds */
+  .card-glass    { background: linear-gradient(145deg, #f0e8ff 0%, #e8d5f5 40%, #fde8f0 100%); }
+  .card-golden   { background: linear-gradient(145deg, #fff8e1 0%, #fdecc0 40%, #fdf0d0 100%); }
+  .card-story    { background: linear-gradient(145deg, #e8f5ed 0%, #d4edd9 40%, #c8e4d0 100%); }
+  .card-timeless { background: linear-gradient(145deg, #e8eeff 0%, #d5e0ff 40%, #e0d8f8 100%); }
+  .card-dragon   { background: linear-gradient(145deg, #ffe8e8 0%, #ffd5d5 40%, #f5c8c8 100%); }
+  .card-gem      { background: linear-gradient(145deg, #e8f8ff 0%, #d0eeff 40%, #c8e8f5 100%); }
+
+  .card-emoji {
+    font-size: 4rem;
+    filter:drop-shadow(0 8px 20px rgba(45,30,58,0.2));
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    animation: float-emoji 4s ease-in-out infinite;
+  }
+  .collection-card:hover .card-emoji { transform:scale(1.2) rotate(10deg); }
+
+  @keyframes float-emoji {
+    0%,100% { transform:translateY(0); }
+    50% { transform:translateY(-12px); }
+  }
+
+  .card-shimmer {
+    position:absolute; inset:0;
+    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
+    transform:translateX(-100%);
+    transition: transform 0.6s ease;
+  }
+  .collection-card:hover .card-shimmer { transform:translateX(100%); }
+
+  .card-content {
+    padding:1.5rem;
+    background: rgba(253,248,242,0.95);
+    backdrop-filter:blur(10px);
+  }
+  .card-badge {
+    display:inline-block; font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase;
+    padding:0.3rem 0.8rem; border-radius:50px; margin-bottom:0.75rem;
+    font-weight:500;
+  }
+  .badge-glass    { background:#f0e8ff; color:#7b5ea7; }
+  .badge-golden   { background:#fff3cd; color:#9a7628; }
+  .badge-story    { background:#e4f5e8; color:#3a8a55; }
+  .badge-timeless { background:#e8ecff; color:#4a5fa8; }
+  .badge-dragon   { background:#ffe4e4; color:#a84a4a; }
+  .badge-gem      { background:#e0f4ff; color:#3a7a9a; }
+
+  .card-title {
+    font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:400;
+    color:var(--ink); margin-bottom:0.5rem;
+  }
+  .card-desc { font-size:0.82rem; color:rgba(45,30,58,0.6); line-height:1.7; }
+  .card-cta {
+    display:inline-flex; align-items:center; gap:0.5rem;
+    margin-top:1rem; font-size:0.78rem; font-weight:500;
+    letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--violet); text-decoration:none; border:none; background:none; cursor:pointer;
+    transition:gap 0.3s;
+  }
+  .card-cta:hover { gap:0.8rem; }
+
+  /* ── Sustainability Band ─────────────────────────── */
+  .sustain-band {
+    background: linear-gradient(135deg, var(--violet) 0%, #c17aab 50%, var(--rose) 100%);
+    padding:5rem 2rem; text-align:center; color:white;
+    position:relative; overflow:hidden;
+  }
+  .sustain-band::before {
+    content:''; position:absolute; inset:0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .sustain-grid {
+    display:flex; justify-content:center; gap:4rem; flex-wrap:wrap;
+    max-width:900px; margin:0 auto;
+  }
+  .sustain-item { text-align:center; }
+  .sustain-icon { font-size:2.5rem; margin-bottom:0.75rem; display:block; }
+  .sustain-num {
+    font-family:'Cormorant Garamond',serif; font-size:3rem; font-weight:600;
+    display:block; line-height:1;
+  }
+  .sustain-label { font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; opacity:0.8; margin-top:0.3rem; }
+  .sustain-title {
+    font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,3.5vw,2.5rem);
+    font-weight:300; margin-bottom:3rem; line-height:1.3;
+  }
+
+  /* ── Featured Products ───────────────────────────── */
+  .featured { padding:8rem 2rem; }
+  .products-grid {
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr));
+    gap:1.5rem; max-width:1200px; margin:0 auto;
+  }
+  .product-card {
+    background:white; border-radius:20px; overflow:hidden;
+    box-shadow:0 4px 20px var(--shadow);
+    transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    cursor:pointer;
+  }
+  .product-card:hover { transform:translateY(-6px); box-shadow:0 16px 50px rgba(45,30,58,0.15); }
+  .product-img {
+    height:260px; display:flex; align-items:center; justify-content:center;
+    font-size:5rem; position:relative; overflow:hidden;
+  }
+  .product-img .product-emoji { animation: float-emoji 4s ease-in-out infinite; }
+  .product-tags {
+    position:absolute; top:1rem; left:1rem; display:flex; gap:0.4rem; flex-wrap:wrap;
+  }
+  .tag {
+    font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase;
+    padding:0.25rem 0.6rem; border-radius:50px; font-weight:500;
+    background:rgba(255,255,255,0.9); color:var(--violet);
+    border:1px solid rgba(155,127,196,0.3);
+  }
+  .wishlist-btn {
+    position:absolute; top:1rem; right:1rem;
+    width:32px; height:32px; border-radius:50%;
+    background:white; border:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 2px 10px rgba(45,30,58,0.1);
+    font-size:0.9rem; transition:all 0.3s;
+  }
+  .wishlist-btn:hover { transform:scale(1.1); background:var(--blush); }
+  .product-body { padding:1.2rem; }
+  .product-collection { font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--violet); margin-bottom:0.3rem; }
+  .product-name { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--ink); margin-bottom:0.5rem; }
+  .product-footer { display:flex; align-items:center; justify-content:space-between; margin-top:1rem; }
+  .product-price { font-size:1rem; font-weight:500; color:var(--ink); }
+  .product-price .original { font-size:0.8rem; color:rgba(45,30,58,0.4); text-decoration:line-through; margin-left:0.4rem; }
+  .add-to-cart {
+    background:linear-gradient(135deg,var(--violet),var(--rose));
+    color:white; border:none; padding:0.5rem 1rem;
+    border-radius:50px; cursor:pointer; font-size:0.75rem; font-weight:500;
+    font-family:'Jost',sans-serif; transition:all 0.3s;
+    box-shadow:0 3px 12px rgba(155,127,196,0.3);
+  }
+  .add-to-cart:hover { transform:scale(1.05); }
+  .eco-score {
+    display:flex; align-items:center; gap:0.3rem; margin-top:0.5rem;
+    font-size:0.7rem; color:var(--sage);
+  }
+
+  /* ── Sustainability story ───────────────────────── */
+  .story-section {
+    padding:8rem 2rem;
+    background: linear-gradient(135deg, #f8f0ff 0%, var(--cream) 50%, #f0fff8 100%);
+  }
+  .story-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:4rem; max-width:1100px; margin:0 auto;
+    align-items:center;
+  }
+  .story-visual {
+    position:relative; border-radius:30px; overflow:hidden;
+    background:linear-gradient(145deg,var(--lavender),var(--blush));
+    padding:3rem; text-align:center;
+    box-shadow:0 20px 60px rgba(45,30,58,0.1);
+  }
+  .story-big-emoji { font-size:8rem; display:block; animation:float-emoji 3s ease-in-out infinite; }
+  .story-bubbles { display:flex; gap:1rem; justify-content:center; margin-top:1.5rem; flex-wrap:wrap; }
+  .story-bubble {
+    background:white; border-radius:20px; padding:0.8rem 1.2rem;
+    box-shadow:0 4px 15px rgba(45,30,58,0.08); text-align:center;
+    min-width:100px;
+  }
+  .bubble-icon { font-size:1.5rem; display:block; margin-bottom:0.3rem; }
+  .bubble-text { font-size:0.7rem; color:rgba(45,30,58,0.6); }
+
+  .story-content { }
+  .story-text { font-size:1rem; line-height:1.9; color:rgba(45,30,58,0.7); margin-bottom:1.5rem; }
+  .story-features { list-style:none; margin-bottom:2rem; }
+  .story-features li {
+    display:flex; align-items:flex-start; gap:0.8rem; margin-bottom:1rem;
+    font-size:0.9rem; color:rgba(45,30,58,0.7); line-height:1.6;
+  }
+  .feature-icon { font-size:1.2rem; flex-shrink:0; }
+
+  /* ── AR & Gamification ──────────────────────────── */
+  .wow-section { padding:8rem 2rem; }
+  .wow-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; max-width:1100px; margin:0 auto; }
+  .wow-card {
+    background:white; border-radius:24px; padding:2.5rem;
+    box-shadow:0 4px 24px var(--shadow); text-align:center;
+    transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    position:relative; overflow:hidden;
+  }
+  .wow-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:4px;
+    background:var(--gradient);
+  }
+  .wow-card:nth-child(1)::before { background:linear-gradient(to right,var(--violet),var(--rose)); }
+  .wow-card:nth-child(2)::before { background:linear-gradient(to right,var(--sage),var(--sky)); }
+  .wow-card:nth-child(3)::before { background:linear-gradient(to right,var(--gold),var(--butter)); }
+  .wow-card:hover { transform:translateY(-8px); box-shadow:0 20px 60px rgba(45,30,58,0.15); }
+  .wow-icon { font-size:3rem; margin-bottom:1.5rem; display:block; animation:float-emoji 5s ease-in-out infinite; }
+  .wow-title { font-family:'Cormorant Garamond',serif; font-size:1.4rem; margin-bottom:0.75rem; }
+  .wow-desc { font-size:0.85rem; color:rgba(45,30,58,0.6); line-height:1.7; }
+  .wow-badge {
+    display:inline-block; margin-top:1rem; padding:0.3rem 0.8rem;
+    background:linear-gradient(135deg,var(--lavender),var(--blush));
+    border-radius:50px; font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--violet);
+  }
+
+  /* ── Loyalty / Gamification visual ─────────────── */
+  .loyalty-section {
+    padding:8rem 2rem;
+    background: linear-gradient(160deg, #fdf0f8 0%, #f0f4ff 50%, #f0fff8 100%);
+  }
+  .loyalty-inner { max-width:1100px; margin:0 auto; }
+  .loyalty-cards { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; margin-top:4rem; }
+  .loyalty-card {
+    background:white; border-radius:20px; padding:1.8rem; text-align:center;
+    box-shadow:0 4px 20px var(--shadow); position:relative;
+    transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .loyalty-card:hover { transform:translateY(-6px); box-shadow:0 16px 45px rgba(45,30,58,0.12); }
+  .loyalty-card.featured-loyalty {
+    background:linear-gradient(145deg,var(--violet),#c17aab);
+    color:white;
+  }
+  .loyalty-crown { font-size:2.5rem; display:block; margin-bottom:1rem; }
+  .loyalty-tier { font-family:'Cormorant Garamond',serif; font-size:1.3rem; margin-bottom:0.5rem; }
+  .loyalty-pts { font-size:0.75rem; opacity:0.7; margin-bottom:1rem; }
+  .loyalty-perks { list-style:none; }
+  .loyalty-perks li { font-size:0.78rem; padding:0.3rem 0; border-top:1px solid rgba(45,30,58,0.06); opacity:0.75; }
+  .featured-loyalty .loyalty-perks li { border-top-color:rgba(255,255,255,0.15); opacity:0.9; }
+
+  /* ── Newsletter / CTA ───────────────────────────── */
+  .cta-section {
+    padding:8rem 2rem; text-align:center;
+    background: linear-gradient(135deg, var(--ink) 0%, #4a2d6a 100%);
+    color:white; position:relative; overflow:hidden;
+  }
+  .cta-section::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(155,127,196,0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 30%, rgba(232,160,184,0.2) 0%, transparent 50%);
+  }
+  .cta-content { position:relative; z-index:1; max-width:600px; margin:0 auto; }
+  .cta-title { font-family:'Cormorant Garamond',serif; font-size:clamp(2.5rem,5vw,4rem); font-weight:300; margin-bottom:1rem; }
+  .cta-title em { color:var(--rose); }
+  .cta-sub { font-size:1rem; opacity:0.7; margin-bottom:2.5rem; line-height:1.7; }
+  .cta-form { display:flex; gap:0.75rem; max-width:440px; margin:0 auto; }
+  .cta-input {
+    flex:1; padding:0.9rem 1.5rem; border-radius:50px;
+    border:1.5px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1);
+    color:white; font-family:'Jost',sans-serif; font-size:0.9rem;
+    backdrop-filter:blur(10px);
+    outline:none; transition:border-color 0.3s;
+  }
+  .cta-input::placeholder { color:rgba(255,255,255,0.5); }
+  .cta-input:focus { border-color:var(--rose); }
+  .cta-submit {
+    background:linear-gradient(135deg,var(--rose),var(--violet));
+    color:white; border:none; padding:0.9rem 2rem;
+    border-radius:50px; cursor:pointer; font-family:'Jost',sans-serif;
+    font-size:0.9rem; font-weight:500; white-space:nowrap;
+    transition:all 0.3s; box-shadow:0 4px 20px rgba(232,160,184,0.4);
+  }
+  .cta-submit:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(232,160,184,0.5); }
+
+  /* ── Footer ──────────────────────────────────────── */
+  footer {
+    background:var(--ink); color:rgba(255,255,255,0.7); padding:4rem 2rem 2rem;
+  }
+  .footer-grid {
+    display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:3rem;
+    max-width:1200px; margin:0 auto 3rem;
+  }
+  .footer-brand .nav-logo { font-size:1.5rem; }
+  .footer-desc { font-size:0.83rem; line-height:1.8; margin-top:1rem; opacity:0.6; }
+  .footer-social { display:flex; gap:0.75rem; margin-top:1.5rem; }
+  .social-btn {
+    width:36px; height:36px; border-radius:50%; border:1px solid rgba(255,255,255,0.2);
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.9rem; color:rgba(255,255,255,0.7); text-decoration:none;
+    transition:all 0.3s;
+  }
+  .social-btn:hover { background:var(--violet); border-color:var(--violet); color:white; }
+  .footer-col h4 {
+    font-size:0.7rem; letter-spacing:0.2em; text-transform:uppercase;
+    color:rgba(255,255,255,0.5); margin-bottom:1.2rem;
+  }
+  .footer-links { list-style:none; }
+  .footer-links li { margin-bottom:0.6rem; }
+  .footer-links a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:0.85rem; transition:color 0.3s; }
+  .footer-links a:hover { color:var(--rose); }
+  .footer-bottom {
+    text-align:center; padding-top:2rem;
+    border-top:1px solid rgba(255,255,255,0.08);
+    font-size:0.78rem; opacity:0.4;
+    max-width:1200px; margin:0 auto;
+  }
+
+  /* ── Magic slider (hero collections) ─────────────── */
+  .slider-section { padding:2rem 0 4rem; }
+  .slider-track {
+    display:flex; gap:1.5rem; padding:1rem 2rem;
+    overflow-x:auto; scrollbar-width:none;
+    scroll-snap-type:x mandatory;
+  }
+  .slider-track::-webkit-scrollbar { display:none; }
+  .slider-card {
+    min-width:200px; border-radius:20px; padding:1.5rem;
+    text-align:center; cursor:pointer; scroll-snap-align:start;
+    box-shadow:0 4px 20px var(--shadow);
+    transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    flex-shrink:0;
+  }
+  .slider-card:hover { transform:translateY(-6px) scale(1.03); box-shadow:0 12px 40px rgba(45,30,58,0.15); }
+  .slider-icon { font-size:3rem; display:block; margin-bottom:0.75rem; }
+  .slider-name { font-family:'Cormorant Garamond',serif; font-size:1rem; }
+
+  /* ── Scroll animations ────────────────────────────── */
+  .reveal {
+    opacity:0; transform:translateY(30px);
+    transition:opacity 0.8s ease, transform 0.8s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  /* ── Mobile ───────────────────────────────────────── */
+  @media(max-width:900px) {
+    .collections-grid { grid-template-columns:1fr 1fr; }
+    .collection-card:nth-child(1), .collection-card:nth-child(4) { grid-row:auto; }
+    .story-grid { grid-template-columns:1fr; }
+    .wow-grid { grid-template-columns:1fr; }
+    .loyalty-cards { grid-template-columns:1fr 1fr; }
+    .footer-grid { grid-template-columns:1fr 1fr; }
+  }
+  @media(max-width:600px) {
+    .collections-grid { grid-template-columns:1fr; }
+    nav { padding:0 1rem; }
+    .nav-links { display:none; }
+    .loyalty-cards { grid-template-columns:1fr; }
+    .footer-grid { grid-template-columns:1fr; }
+    .cta-form { flex-direction:column; }
+  }
+
+  /* ── Toast notification ───────────────────────────── */
+  .toast {
+    position:fixed; bottom:2rem; right:2rem; z-index:9000;
+    background:linear-gradient(135deg,var(--violet),var(--rose));
+    color:white; padding:1rem 1.5rem; border-radius:16px;
+    box-shadow:0 8px 30px rgba(155,127,196,0.4);
+    font-size:0.85rem; font-weight:500;
+    transform:translateY(100px); opacity:0;
+    transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    max-width:300px;
+  }
+  .toast.show { transform:translateY(0); opacity:1; }
+</style>
 </head>
 <body>
-  <!-- Header / Navigation -->
-  <header>
-    <nav class="navbar">
-      <div class="logo">✨Fairycore Fashion</div>
-      <ul class="nav-links">
-        <li><a href="#collections">Collections</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
+
+<!-- Floating particles -->
+<div class="particles" id="particles"></div>
+
+<!-- Magic cursor -->
+<div class="cursor-sparkle" id="cursor"></div>
+
+<!-- ── Navigation ──────────────────────────────────── -->
+<nav>
+  <a href="#" class="nav-logo">✨ Magic <span>Closet</span></a>
+  <ul class="nav-links">
+    <li><a href="#collections">Collections</a></li>
+    <li><a href="#products">Shop</a></li>
+    <li><a href="#story">Our Story</a></li>
+    <li><a href="#sustainability">Sustainability</a></li>
+    <li><a href="#loyalty">Rewards</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="nav-icon">🔍</button>
+    <button class="nav-icon">🤍</button>
+    <button class="cart-btn" onclick="showToast('🛒 Your cart awaits!')">Bag (0)</button>
+  </div>
+</nav>
+
+<!-- ── Hero ────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-decorations">
+    <div class="deco-circle"></div>
+    <div class="deco-circle"></div>
+    <div class="deco-circle"></div>
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">✨ Sustainable Fairy-Tale Fashion ✨</p>
+    <h1 class="hero-title">
+      Step Into Your<br>
+      <em>Enchanted</em> <span class="gold">Wardrobe</span>
+    </h1>
+    <p class="hero-sub">Where recycled materials become spellbinding fashion. Six magical collections, ethically crafted, endlessly beautiful.</p>
+    <div class="hero-buttons">
+      <a href="#collections" class="btn-primary">✨ Explore Collections</a>
+      <a href="#story" class="btn-secondary">📖 Our Story</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">12K+</span>
+        <span class="stat-label">Garments Recycled</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">98%</span>
+        <span class="stat-label">Ethical Sourcing</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">Zero</span>
+        <span class="stat-label">Landfill Waste</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">60+</span>
+        <span class="stat-label">Artisan Partners</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ── Collection mini-slider ──────────────────────── -->
+<div class="slider-section">
+  <div class="slider-track">
+    <div class="slider-card card-glass" onclick="showToast('👡 Glass Slipper Muse ✨')">
+      <span class="slider-icon">👠</span>
+      <div class="slider-name">Glass Slipper Muse</div>
+    </div>
+    <div class="slider-card card-golden" onclick="showToast('✨ Golden Thread Muse ✨')">
+      <span class="slider-icon">🌟</span>
+      <div class="slider-name">Golden Thread Muse</div>
+    </div>
+    <div class="slider-card card-story" onclick="showToast('📚 Storykeeper Muse ✨')">
+      <span class="slider-icon">📖</span>
+      <div class="slider-name">Storykeeper Muse</div>
+    </div>
+    <div class="slider-card card-timeless" onclick="showToast('🧭 Timeless Companion ✨')">
+      <span class="slider-icon">🧭</span>
+      <div class="slider-name">Timeless Companion</div>
+    </div>
+    <div class="slider-card card-dragon" onclick="showToast('🐉 Dragonheart Ethic ✨')">
+      <span class="slider-icon">🐉</span>
+      <div class="slider-name">Dragonheart Ethic</div>
+    </div>
+    <div class="slider-card card-gem" onclick="showToast('💎 Infinite Gem ✨')">
+      <span class="slider-icon">💎</span>
+      <div class="slider-name">Infinite Gem</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Collections ─────────────────────────────────── -->
+<section class="collections" id="collections">
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Our Magical Collections</span>
+    <h2 class="section-title">Six <em>Enchanted</em> Worlds</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="collections-grid">
+    <!-- Glass Slipper -->
+    <div class="collection-card reveal" onclick="showToast('👠 Exploring Glass Slipper Muse...')">
+      <div class="card-visual card-glass">
+        <div class="card-shimmer"></div>
+        <span class="card-emoji">👠</span>
+      </div>
+      <div class="card-content">
+        <span class="card-badge badge-glass">♻️ Recycled Footwear</span>
+        <h3 class="card-title">Glass Slipper Muse</h3>
+        <p class="card-desc">Every step tells a story — crafted from reclaimed materials, each pair is a one-of-a-kind fairy-tale waiting to be worn.</p>
+        <button class="card-cta">Explore Collection →</button>
+      </div>
+    </div>
+
+    <!-- Golden Thread -->
+    <div class="collection-card reveal" onclick="showToast('🌟 Exploring Golden Thread Muse...')">
+      <div class="card-visual card-golden">
+        <div class="card-shimmer"></div>
+        <span class="card-emoji">🌟</span>
+      </div>
+      <div class="card-content">
+        <span class="card-badge badge-golden">✨ Hair Accessories</span>
+        <h3 class="card-title">Golden Thread Muse</h3>
+        <p class="card-desc">Woven from imagination and reclaimed threads — adornments that crown you in sustainable magic.</p>
+        <button class="card-cta">Explore Collection →</button>
+      </div>
+    </div>
+
+    <!-- Storykeeper -->
+    <div class="collection-card reveal" onclick="showToast('📚 Exploring Storykeeper Muse...')">
+      <div class="card-visual card-story">
+        <div class="card-shimmer"></div>
+        <span class="card-emoji">📖</span>
+      </div>
+      <div class="card-content">
+        <span class="card-badge badge-story">🌿 Reworked Clothing</span>
+        <h3 class="card-title">Storykeeper Muse</h3>
+        <p class="card-desc">Reworked and recycled garments transformed into wearable narratives — each piece carries the memory of its past life.</p>
+        <button class="card-cta">Explore Collection →</button>
+      </div>
+    </div>
+
+    <!-- Timeless Companion -->
+    <div class="collection-card reveal" onclick="showToast('🧭 Exploring Timeless Companion...')">
+      <div class="card-visual card-timeless">
+        <div class="card-shimmer"></div>
+        <span class="card-emoji">🧭</span>
+      </div>
+      <div class="card-content">
+        <span class="card-badge badge-timeless">⏳ Classic Upcycled</span>
+        <h3 class="card-title">Timeless Companion</h3>
+        <p class="card-desc">Enduring classics reborn through upcycling — pieces that transcend seasons and speak to a sustainable future.</p>
+        <button class="card-cta">Explore Collection →</button>
+      </div>
+    </div>
+
+    <!-- Dragonheart -->
+    <div class="collection-card reveal" onclick="showToast('🐉 Exploring Dragonheart Ethic...')">
+      <div class="card-visual card-dragon">
+        <div class="card-shimmer"></div>
+        <span class="card-emoji">🐉</span>
+      </div>
+      <div class="card-content">
+        <span class="card-badge badge-dragon">🔥 Statement Pieces</span>
+        <h3 class="card-title">Dragonheart Ethic</h3>
+        <p class="card-desc">Bold, ethical, unapologetic — statement pieces forged with fair-trade values and fierce intention.</p>
+        <button class="card-cta">Explore Collection →</button>
+      </div>
+    </div>
+
+    <!-- Infinite Gem -->
+    <div class="collection-card reveal" onclick="showToast('💎 Exploring Infinite Gem...')">
+      <div class="card-visual card-gem">
+        <div class="card-shimmer"></div>
+        <span class="card-emoji">💎</span>
+      </div>
+      <div class="card-content">
+        <span class="card-badge badge-gem">💫 Jewelry & Accessories</span>
+        <h3 class="card-title">Infinite Gem Accessories</h3>
+        <p class="card-desc">Precious and sustainable — jewelry and small accessories crafted with ethically-sourced gems and recycled metals.</p>
+        <button class="card-cta">Explore Collection →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Sustainability Band ─────────────────────────── -->
+<section class="sustain-band" id="sustainability">
+  <div style="position:relative;z-index:1;max-width:900px;margin:0 auto">
+    <h2 class="sustain-title">Every purchase plants a seed<br>in our <em>enchanted</em> future</h2>
+    <div class="sustain-grid">
+      <div class="sustain-item reveal">
+        <span class="sustain-icon">🌱</span>
+        <span class="sustain-num">12K+</span>
+        <div class="sustain-label">Kg of Waste Diverted</div>
+      </div>
+      <div class="sustain-item reveal">
+        <span class="sustain-icon">💧</span>
+        <span class="sustain-num">85%</span>
+        <div class="sustain-label">Water Saved vs Fast Fashion</div>
+      </div>
+      <div class="sustain-item reveal">
+        <span class="sustain-icon">🌍</span>
+        <span class="sustain-num">100%</span>
+        <div class="sustain-label">Carbon Offset Certified</div>
+      </div>
+      <div class="sustain-item reveal">
+        <span class="sustain-icon">🤝</span>
+        <span class="sustain-num">Fair</span>
+        <div class="sustain-label">Living Wages Guaranteed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Featured Products ───────────────────────────── -->
+<section class="featured" id="products">
+  <div class="section-header reveal">
+    <span class="section-eyebrow">Curated Magic</span>
+    <h2 class="section-title">Featured <em>Enchantments</em></h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="products-grid">
+    <!-- Product 1 -->
+    <div class="product-card reveal">
+      <div class="product-img card-glass">
+        <div class="product-tags"><span class="tag">Bestseller</span><span class="tag">♻️ Recycled</span></div>
+        <span class="product-emoji">👠</span>
+        <button class="wishlist-btn" onclick="showToast('💖 Added to Wishlist!')">🤍</button>
+      </div>
+      <div class="product-body">
+        <div class="product-collection">Glass Slipper Muse</div>
+        <div class="product-name">Moonlight Ballet Flat</div>
+        <div class="eco-score">🌿 Eco Score: 9.2/10</div>
+        <div class="product-footer">
+          <div class="product-price">$148 <span class="original">$220</span></div>
+          <button class="add-to-cart" onclick="showToast('👠 Added to Bag! ✨')">Add to Bag</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 2 -->
+    <div class="product-card reveal">
+      <div class="product-img card-golden">
+        <div class="product-tags"><span class="tag">New</span><span class="tag">✨ Handmade</span></div>
+        <span class="product-emoji">🌸</span>
+        <button class="wishlist-btn" onclick="showToast('💖 Added to Wishlist!')">🤍</button>
+      </div>
+      <div class="product-body">
+        <div class="product-collection">Golden Thread Muse</div>
+        <div class="product-name">Blossom Crown Headpiece</div>
+        <div class="eco-score">🌿 Eco Score: 9.8/10</div>
+        <div class="product-footer">
+          <div class="product-price">$62</div>
+          <button class="add-to-cart" onclick="showToast('🌸 Added to Bag! ✨')">Add to Bag</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 3 -->
+    <div class="product-card reveal">
+      <div class="product-img card-story">
+        <div class="product-tags"><span class="tag">Limited</span><span class="tag">🌿 Upcycled</span></div>
+        <span class="product-emoji">🧥</span>
+        <button class="wishlist-btn" onclick="showToast('💖 Added to Wishlist!')">🤍</button>
+      </div>
+      <div class="product-body">
+        <div class="product-collection">Storykeeper Muse</div>
+        <div class="product-name">Velvet Dusk Blazer</div>
+        <div class="eco-score">🌿 Eco Score: 9.5/10</div>
+        <div class="product-footer">
+          <div class="product-price">$234 <span class="original">$380</span></div>
+          <button class="add-to-cart" onclick="showToast('🧥 Added to Bag! ✨')">Add to Bag</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 4 -->
+    <div class="product-card reveal">
+      <div class="product-img card-dragon">
+        <div class="product-tags"><span class="tag">Ethical</span><span class="tag">🔥 Statement</span></div>
+        <span class="product-emoji">🐉</span>
+        <button class="wishlist-btn" onclick="showToast('💖 Added to Wishlist!')">🤍</button>
+      </div>
+      <div class="product-body">
+        <div class="product-collection">Dragonheart Ethic</div>
+        <div class="product-name">Ember Scale Jacket</div>
+        <div class="eco-score">🌿 Eco Score: 9.0/10</div>
+        <div class="product-footer">
+          <div class="product-price">$312</div>
+          <button class="add-to-cart" onclick="showToast('🐉 Added to Bag! ✨')">Add to Bag</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 5 -->
+    <div class="product-card reveal">
+      <div class="product-img card-gem">
+        <div class="product-tags"><span class="tag">Popular</span><span class="tag">💎 Recycled Metal</span></div>
+        <span class="product-emoji">💍</span>
+        <button class="wishlist-btn" onclick="showToast('💖 Added to Wishlist!')">🤍</button>
+      </div>
+      <div class="product-body">
+        <div class="product-collection">Infinite Gem Accessories</div>
+        <div class="product-name">Starfall Pendant Necklace</div>
+        <div class="eco-score">🌿 Eco Score: 9.9/10</div>
+        <div class="product-footer">
+          <div class="product-price">$89 <span class="original">$130</span></div>
+          <button class="add-to-cart" onclick="showToast('💍 Added to Bag! ✨')">Add to Bag</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 6 -->
+    <div class="product-card reveal">
+      <div class="product-img card-timeless">
+        <div class="product-tags"><span class="tag">Classic</span><span class="tag">⏳ Upcycled</span></div>
+        <span class="product-emoji">🧣</span>
+        <button class="wishlist-btn" onclick="showToast('💖 Added to Wishlist!')">🤍</button>
+      </div>
+      <div class="product-body">
+        <div class="product-collection">Timeless Companion</div>
+        <div class="product-name">Whisper Silk Scarf</div>
+        <div class="eco-score">🌿 Eco Score: 9.6/10</div>
+        <div class="product-footer">
+          <div class="product-price">$74</div>
+          <button class="add-to-cart" onclick="showToast('🧣 Added to Bag! ✨')">Add to Bag</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Story Section ───────────────────────────────── -->
+<section class="story-section" id="story">
+  <div class="story-grid" style="max-width:1100px;margin:0 auto">
+    <div class="story-visual reveal">
+      <span class="story-big-emoji">🌍</span>
+      <div class="story-bubbles">
+        <div class="story-bubble">
+          <span class="bubble-icon">🌱</span>
+          <div class="bubble-text">Zero Waste</div>
+        </div>
+        <div class="story-bubble">
+          <span class="bubble-icon">🤝</span>
+          <div class="bubble-text">Fair Trade</div>
+        </div>
+        <div class="story-bubble">
+          <span class="bubble-icon">💫</span>
+          <div class="bubble-text">Transparent</div>
+        </div>
+        <div class="story-bubble">
+          <span class="bubble-icon">♻️</span>
+          <div class="bubble-text">Circular</div>
+        </div>
+      </div>
+    </div>
+    <div class="story-content reveal">
+      <span class="section-eyebrow">Our Enchanted Mission</span>
+      <h2 class="section-title">Fashion with a <em>Conscience</em></h2>
+      <div class="section-divider" style="margin:1rem 0 1.5rem"></div>
+      <p class="story-text">Magic Closet was born from a dream: that fashion could be both breathtaking and kind. We believe every garment has a story worth continuing — so we rescue, rework, and reimagine textiles into pieces that make you feel like the protagonist of your own fairy tale.</p>
+      <ul class="story-features">
+        <li><span class="feature-icon">🗺️</span> <div><strong>Full Supply Chain Transparency</strong> — Every item includes sourcing details, artisan wages, and carbon footprint data. No secrets, only stories.</div></li>
+        <li><span class="feature-icon">♻️</span> <div><strong>Circular Economy Program</strong> — Return worn items for store credit and recycling rewards. Fashion that never ends.</div></li>
+        <li><span class="feature-icon">🤝</span> <div><strong>60+ Artisan Partners</strong> — Working directly with ethical manufacturers who pay living wages and safe conditions.</div></li>
+        <li><span class="feature-icon">🌿</span> <div><strong>1% for the Planet</strong> — Every purchase contributes to environmental regeneration initiatives worldwide.</div></li>
       </ul>
-    </nav>
-    <div class="hero">
-      <h1>Magical Sustainable Fashion</h1>
-      <p>Eco-friendly, ethical, and enchanting collections inspired by fairytales</p>
-      <a href="#collections" class="btn">Explore Collections</a>
+      <a href="#" class="btn-primary" style="display:inline-flex">📖 Read Our Full Story</a>
     </div>
-  </header>
+  </div>
+</section>
 
-  <!-- Collections Section -->
-  <section id="collections" class="collections">
-    <h2>Our Collections</h2>
-    <div class="collection-grid">
-      <div class="collection-card">
-        <img src="images/glass-slipper.jpg" alt="Glass Slipper Muse">
-        <h3>Glass Slipper Muse</h3>
-        <p>Recycled footwear fit for every fairy tale adventure.</p>
+<!-- ── Wow Features ────────────────────────────────── -->
+<section class="wow-section">
+  <div class="section-header reveal">
+    <span class="section-eyebrow">The Magic Touch</span>
+    <h2 class="section-title">Where Tech Meets <em>Fairy Tale</em></h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="wow-grid">
+    <div class="wow-card reveal">
+      <span class="wow-icon">🪞</span>
+      <h3 class="wow-title">AR Virtual Try-On</h3>
+      <p class="wow-desc">Step into the magic mirror and see how pieces blend with your existing wardrobe before you buy. No changing rooms, no surprises — just enchantment.</p>
+      <span class="wow-badge">✨ Coming Soon</span>
+    </div>
+    <div class="wow-card reveal">
+      <span class="wow-icon">🌍</span>
+      <h3 class="wow-title">Sustainability Dashboard</h3>
+      <p class="wow-desc">Explore the full lifecycle of every item: where it came from, who made it, what it's made of, and how much carbon it saved. Radical transparency.</p>
+      <span class="wow-badge">🌿 Live Now</span>
+    </div>
+    <div class="wow-card reveal">
+      <span class="wow-icon">🎮</span>
+      <h3 class="wow-title">Gamified Recycling</h3>
+      <p class="wow-desc">Return old clothes for magical badges, points, and store credit. Level up your eco-warrior status and unlock exclusive collection access.</p>
+      <span class="wow-badge">🏆 Active</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── Loyalty / Rewards ───────────────────────────── -->
+<section class="loyalty-section" id="loyalty">
+  <div class="loyalty-inner">
+    <div class="section-header reveal">
+      <span class="section-eyebrow">The Enchanted Rewards Club</span>
+      <h2 class="section-title">Your <em>Magical</em> Journey</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="loyalty-cards">
+      <div class="loyalty-card reveal">
+        <span class="loyalty-crown">🌸</span>
+        <div class="loyalty-tier">Blossom</div>
+        <div class="loyalty-pts">0–500 petals</div>
+        <ul class="loyalty-perks">
+          <li>Early sale access</li>
+          <li>Birthday surprise</li>
+          <li>Eco content</li>
+        </ul>
       </div>
-      <div class="collection-card">
-        <img src="images/golden-thread.jpg" alt="Golden Thread Muse">
-        <h3>Golden Thread Muse</h3>
-        <p>Eco-friendly hair accessories inspired by enchanted stories.</p>
+      <div class="loyalty-card reveal">
+        <span class="loyalty-crown">🌙</span>
+        <div class="loyalty-tier">Moonbeam</div>
+        <div class="loyalty-pts">501–1,500 petals</div>
+        <ul class="loyalty-perks">
+          <li>Free shipping always</li>
+          <li>10% recycling bonus</li>
+          <li>Styling sessions</li>
+        </ul>
       </div>
-      <div class="collection-card">
-        <img src="images/storykeeper.jpg" alt="Storykeeper Muse">
-        <h3>Storykeeper Muse</h3>
-        <p>Reworked clothing giving your wardrobe a second magical life.</p>
+      <div class="loyalty-card featured-loyalty reveal">
+        <span class="loyalty-crown">⭐</span>
+        <div class="loyalty-tier">Stardust</div>
+        <div class="loyalty-pts">1,501–5,000 petals</div>
+        <ul class="loyalty-perks">
+          <li>20% on all orders</li>
+          <li>AR try-on early access</li>
+          <li>VIP collection drops</li>
+          <li>Artisan meet & greet</li>
+        </ul>
       </div>
-      <div class="collection-card">
-        <img src="images/timeless-companion.jpg" alt="Timeless Companion">
-        <h3>Timeless Companion Collection</h3>
-        <p>Classic sustainable pieces that never go out of style.</p>
+      <div class="loyalty-card reveal">
+        <span class="loyalty-crown">✨</span>
+        <div class="loyalty-tier">Enchanted</div>
+        <div class="loyalty-pts">5,001+ petals</div>
+        <ul class="loyalty-perks">
+          <li>Custom bespoke pieces</li>
+          <li>Co-design collections</li>
+          <li>Lifetime free returns</li>
+          <li>Annual fairy tale gift</li>
+        </ul>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- About Section -->
-  <section id="about" class="about">
-    <h2>About Fairycore Fashion</h2>
-    <p>We bring magic to sustainable fashion. Each collection is ethically made, uses eco-friendly materials, and embraces transparency in our supply chain.</p>
-  </section>
+<!-- ── CTA / Newsletter ────────────────────────────── -->
+<section class="cta-section">
+  <div class="cta-content reveal">
+    <h2 class="cta-title">Enter the <em>Magic</em> Circle</h2>
+    <p class="cta-sub">Join 40,000+ dreamers who wear their values. Get first access to new collections, sustainability stories, and enchanted offers.</p>
+    <div class="cta-form">
+      <input type="email" class="cta-input" placeholder="your@fairytale.com" id="emailInput">
+      <button class="cta-submit" onclick="handleSubscribe()">✨ Join Now</button>
+    </div>
+    <p style="font-size:0.72rem;opacity:0.4;margin-top:1rem">No spam. Just magic. Unsubscribe anytime.</p>
+  </div>
+</section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="contact">
-    <h2>Contact Us</h2>
-    <form>
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Your Email" required>
-      <textarea placeholder="Message"></textarea>
-      <button type="submit">Send</button>
-    </form>
-  </section>
+<!-- ── Footer ──────────────────────────────────────── -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="color:rgba(255,255,255,0.9)">✨ Magic <span style="color:var(--gold)">Closet</span></a>
+      <p class="footer-desc">Sustainable fairy-tale fashion for dreamers who care. Six enchanted collections, ethically made, endlessly beautiful.</p>
+      <div class="footer-social">
+        <a href="#" class="social-btn">📸</a>
+        <a href="#" class="social-btn">🐦</a>
+        <a href="#" class="social-btn">📌</a>
+        <a href="#" class="social-btn">▶️</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Collections</h4>
+      <ul class="footer-links">
+        <li><a href="#">👠 Glass Slipper Muse</a></li>
+        <li><a href="#">🌟 Golden Thread Muse</a></li>
+        <li><a href="#">📖 Storykeeper Muse</a></li>
+        <li><a href="#">🧭 Timeless Companion</a></li>
+        <li><a href="#">🐉 Dragonheart Ethic</a></li>
+        <li><a href="#">💎 Infinite Gem</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Our World</h4>
+      <ul class="footer-links">
+        <li><a href="#">Our Story</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Supply Chain</a></li>
+        <li><a href="#">Artisan Partners</a></li>
+        <li><a href="#">Impact Report</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Help</h4>
+      <ul class="footer-links">
+        <li><a href="#">Size Guide</a></li>
+        <li><a href="#">Shipping & Returns</a></li>
+        <li><a href="#">Recycle & Earn</a></li>
+        <li><a href="#">Rewards Club</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">FAQ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Magic Closet. Crafted with ✨ and sustainable magic. All pieces tell a story.</p>
+  </div>
+</footer>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2026 Fairycore Sustainable Fashion | All Rights Reserved</p>
-  </footer>
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── Cursor sparkle ─────────────────────────────────
+  const cursor = document.getElementById('cursor');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+  });
+
+  // ── Floating particles ─────────────────────────────
+  const particlesEl = document.getElementById('particles');
+  const sparkles = ['✨','⭐','🌸','💫','🌟','❋','⚬','·'];
+  const colors = ['#f5d6e0','#dcd3f0','#c8ead8','#fdf0c2','#c9a84c','#e8a0b8'];
+
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 8 + 4;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      top:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${Math.random()*15+10}s;
+      animation-delay:${Math.random()*10}s;
+    `;
+    particlesEl.appendChild(p);
+  }
+
+  // ── Scroll reveal ──────────────────────────────────
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        // stagger children
+        const children = e.target.parentElement?.querySelectorAll('.reveal');
+        if (children) {
+          [...children].forEach((c, i) => {
+            if (!c.classList.contains('visible')) {
+              setTimeout(() => c.classList.add('visible'), i * 100);
+            }
+          });
+        }
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── Toast ──────────────────────────────────────────
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2800);
+  }
+
+  // ── Newsletter ─────────────────────────────────────
+  function handleSubscribe() {
+    const val = document.getElementById('emailInput').value;
+    if (val && val.includes('@')) {
+      showToast('✨ Welcome to the magic circle! Check your inbox 🌸');
+      document.getElementById('emailInput').value = '';
+    } else {
+      showToast('💫 Please enter a valid email!');
+    }
+  }
+
+  // ── Animate collection cards stagger ──────────────
+  const collectionCards = document.querySelectorAll('.collection-card');
+  const cardObserver = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }, i * 120);
+      }
+    });
+  }, { threshold: 0.05 });
+
+  collectionCards.forEach(card => {
+    card.style.opacity = '0';
+    card.style.transform = 'translateY(40px)';
+    card.style.transition = 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s ease';
+    cardObserver.observe(card);
+  });
+
+  // ── Nav scroll effect ──────────────────────────────
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 80) {
+      nav.style.boxShadow = '0 4px 30px rgba(45,30,58,0.1)';
+    } else {
+      nav.style.boxShadow = 'none';
+    }
+  });
+
+  // ── Random float animation delays for products ────
+  document.querySelectorAll('.product-emoji, .card-emoji').forEach((el, i) => {
+    el.style.animationDelay = `${i * 0.4}s`;
+  });
+</script>
 </body>
 </html>
