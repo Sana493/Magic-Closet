@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Shop — Magic Closet</title>
+<link rel="stylesheet" href="../css/base.css"/>
+<link rel="stylesheet" href="../css/nav.css"/>
+<style>
+.page-hero { padding:140px 3% 60px;background:linear-gradient(135deg,#fdf0f8,var(--cream) 60%,#f0fff8);text-align:center; }
+.page-hero h1 { font-size:clamp(2.5rem,5vw,4rem);font-weight:300;margin-bottom:12px; }
+.shop-wrap { max-width:1280px;margin:0 auto;padding:40px 3% 100px;display:grid;grid-template-columns:240px 1fr;gap:40px; }
+/* Sidebar */
+.sidebar { position:sticky;top:88px;height:fit-content; }
+.sidebar-section { margin-bottom:32px; }
+.sidebar-section h4 { font-family:'Cormorant Garamond',serif;font-size:1rem;margin-bottom:14px;color:var(--ink); }
+.filter-btn { display:block;width:100%;text-align:left;background:none;border:1.5px solid rgba(45,30,58,.1);border-radius:10px;padding:8px 14px;margin-bottom:8px;font-size:.82rem;color:var(--ink);transition:all .25s;cursor:pointer; }
+.filter-btn:hover,.filter-btn.active { background:var(--violet);color:#fff;border-color:var(--violet); }
+.price-range { width:100%;accent-color:var(--violet);margin:10px 0; }
+/* Products area */
+.shop-header { display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:12px; }
+.shop-count  { font-size:.82rem;opacity:.6; }
+.sort-select { padding:8px 16px;border-radius:10px;border:1.5px solid rgba(45,30,58,.1);font-family:'Jost',sans-serif;font-size:.82rem;background:#fff;color:var(--ink);outline:none; }
+.products-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:22px; }
+/* Reuse .prod-card from base */
+.prod-card { background:#fff;border-radius:20px;overflow:hidden;box-shadow:var(--shadow-sm);transition:transform .35s var(--ease-spring),box-shadow .35s;cursor:pointer; }
+.prod-card:hover { transform:translateY(-8px);box-shadow:var(--shadow-lg); }
+.prod-img  { height:260px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden; }
+.prod-tags { position:absolute;top:12px;left:12px;display:flex;gap:6px;flex-wrap:wrap;z-index:2; }
+.ptag { font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:40px;font-weight:500;background:rgba(255,255,255,.88);color:var(--violet);border:1px solid rgba(123,94,167,.25); }
+.wish-btn  { position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:#fff;border:none;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);font-size:.95rem;transition:all .25s;z-index:2; }
+.wish-btn:hover { transform:scale(1.12);background:var(--blush); }
+.prod-body { padding:18px 16px; }
+.prod-col  { font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--violet);margin-bottom:4px; }
+.prod-name { font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--ink);margin-bottom:6px; }
+.eco-row   { font-size:.7rem;color:var(--sage-deep); }
+.prod-foot { display:flex;align-items:center;justify-content:space-between;margin-top:12px; }
+.prod-price{ font-size:1rem;font-weight:500;color:var(--ink); }
+.prod-price s { font-size:.78rem;color:rgba(45,30,58,.38);font-weight:300;margin-left:5px; }
+.add-btn { background:var(--grad-hero);color:#fff;border:none;padding:8px 16px;border-radius:30px;font-size:.72rem;font-weight:500;transition:transform .2s; }
+.add-btn:hover { transform:scale(1.05); }
+/* Materials tooltip */
+.mat-info { font-size:.68rem;color:rgba(45,30,58,.5);margin-top:6px;line-height:1.5; }
+.carbon-badge { display:inline-flex;align-items:center;gap:4px;background:#e4f5e8;color:#3a8a55;border-radius:8px;padding:3px 8px;font-size:.62rem;margin-top:6px; }
+@media(max-width:960px){ .shop-wrap { grid-template-columns:1fr; } .sidebar { position:static; } .products-grid { grid-template-columns:1fr 1fr; } }
+@media(max-width:600px){ .products-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-ring"></div>
+<div id="particles"></div>
+<div class="toast" id="toast"></div>
+<div id="app-nav"></div>
+
+<div class="page-hero">
+  <span class="section-eyebrow">All Collections</span>
+  <h1 class="section-title">Curated <em>Magic</em></h1>
+  <div class="section-div"></div>
+</div>
+
+<div class="shop-wrap">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <h4>Collection</h4>
+      <button class="filter-btn active" data-filter="all">All Collections</button>
+      <button class="filter-btn" data-filter="glass">👠 Glass Slipper</button>
+      <button class="filter-btn" data-filter="gold">🌟 Golden Thread</button>
+      <button class="filter-btn" data-filter="story">📖 Storykeeper</button>
+      <button class="filter-btn" data-filter="time">🧭 Timeless Companion</button>
+      <button class="filter-btn" data-filter="drag">🐉 Dragonheart Ethic</button>
+      <button class="filter-btn" data-filter="gem">💎 Infinite Gem</button>
+    </div>
+    <div class="sidebar-section">
+      <h4>Price Range</h4>
+      <input type="range" class="price-range" id="price-max" min="10" max="200" value="200"/>
+      <p style="font-size:.8rem;opacity:.6;">Up to $<span id="price-label">200</span></p>
+    </div>
+    <div class="sidebar-section">
+      <h4>Sustainability</h4>
+      <button class="filter-btn" data-filter="recycled">♻️ Recycled Materials</button>
+      <button class="filter-btn" data-filter="fair">🤝 Fair Trade</button>
+      <button class="filter-btn" data-filter="handmade">✨ Handmade</button>
+    </div>
+  </aside>
+
+  <!-- Products -->
+  <div>
+    <div class="shop-header">
+      <span class="shop-count" id="shop-count">Showing all products</span>
+      <select class="sort-select" id="sort-select">
+        <option value="default">Sort: Featured</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="eco">Eco Score</option>
+      </select>
+    </div>
+    <div class="products-grid" id="shop-grid"></div>
+  </div>
+</div>
+
+<div id="app-footer"></div>
+<script src="../js/main.js"></script>
+<script src="../js/nav-template.js"></script>
+<script src="../js/products-data.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  injectNav(); injectFooter();
+  renderShop(PRODUCTS);
+
+  // Filter buttons
+  document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilters();
+    });
+  });
+
+  // Price range
+  const priceSlider = document.getElementById('price-max');
+  document.getElementById('price-label').textContent = priceSlider.value;
+  priceSlider.addEventListener('input', () => {
+    document.getElementById('price-label').textContent = priceSlider.value;
+    applyFilters();
+  });
+
+  // Sort
+  document.getElementById('sort-select').addEventListener('change', applyFilters);
+
+  // URL param filter
+  const params = new URLSearchParams(location.search);
+  const c = params.get('c');
+  if (c) {
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    const btn = document.querySelector(`[data-filter="${c}"]`);
+    if (btn) { btn.classList.add('active'); applyFilters(); }
+  }
+});
+
+function applyFilters() {
+  const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+  const maxPrice     = parseInt(document.getElementById('price-max').value);
+  const sort         = document.getElementById('sort-select').value;
+
+  let filtered = PRODUCTS.filter(p => {
+    if (activeFilter === 'all') return true;
+    if (['glass','gold','story','time','drag','gem'].includes(activeFilter)) return p.collectionKey === activeFilter;
+    if (activeFilter === 'recycled') return p.ecoTag.includes('Recycled') || p.ecoTag.includes('♻️');
+    if (activeFilter === 'fair')     return p.ecoTag.includes('Fair');
+    if (activeFilter === 'handmade') return p.ecoTag.includes('Handmade') || p.ecoTag.includes('Artisan');
+    return true;
+  }).filter(p => p.price <= maxPrice);
+
+  if (sort === 'price-asc')  filtered.sort((a,b)=>a.price-b.price);
+  if (sort === 'price-desc') filtered.sort((a,b)=>b.price-a.price);
+  if (sort === 'eco')        filtered.sort((a,b)=>b.ecoScore-a.ecoScore);
+
+  renderShop(filtered);
+}
+
+function renderShop(products) {
+  const grid = document.getElementById('shop-grid');
+  document.getElementById('shop-count').textContent = `Showing ${products.length} product${products.length!==1?'s':''}`;
+  grid.innerHTML = products.map(p => {
+    const origHtml = p.original ? `<s>$${p.original}</s>` : '';
+    return `<div class="prod-card reveal">
+      <div class="prod-img ${p.colourClass}">
+        <div class="prod-tags">${p.tags.map(t=>`<span class="ptag">${t}</span>`).join('')}</div>
+        <button class="wish-btn" onclick="event.stopPropagation();wishlist('${p.id}')">🤍</button>
+        <div style="font-size:5.5rem;animation:floatEm 3.5s ease-in-out infinite;">${p.emoji}</div>
+      </div>
+      <div class="prod-body">
+        <div class="prod-col" style="color:${p.colourHex};">${p.collection}</div>
+        <div class="prod-name">${p.name}</div>
+        <div class="eco-row">🌿 Eco Score: ${p.ecoScore}/10</div>
+        <div class="mat-info">📦 ${p.materials}</div>
+        <div class="carbon-badge">🌱 ${p.carbon}</div>
+        <div class="prod-foot">
+          <div class="prod-price">$${p.price} ${origHtml}</div>
+          <button class="add-btn" onclick="Cart.add('${p.name}',${p.price},'${p.emoji}')">Add to Bag</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  // Re-observe new cards
+  document.querySelectorAll('.reveal').forEach(el => {
+    const obs = new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');}),{threshold:.08});
+    obs.observe(el);
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sustainability — Magic Closet</title>
+<link rel="stylesheet" href="../css/base.css"/>
+<link rel="stylesheet" href="../css/nav.css"/>
+<style>
+.page-hero { padding:140px 3% 60px;text-align:center;background:linear-gradient(135deg,#e4f5e8,#f0fff8 50%,#fdf8f2); }
+.page-hero h1 { font-size:clamp(2.4rem,5vw,4rem);font-weight:300;margin-bottom:12px; }
+
+/* ── Tabs ── */
+.tabs-wrap { max-width:1100px;margin:0 auto;padding:0 3%; }
+.tab-nav { display:flex;gap:0;border-bottom:2px solid rgba(45,30,58,.08);margin-bottom:48px;overflow-x:auto;scrollbar-width:none; }
+.tab-nav::-webkit-scrollbar { display:none; }
+.tab-btn {
+  background:none;border:none;padding:14px 28px;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(45,30,58,.5);border-bottom:2px solid transparent;margin-bottom:-2px;
+  white-space:nowrap;transition:all .25s;
+}
+.tab-btn.active { color:var(--violet);border-bottom-color:var(--violet);font-weight:500; }
+.tab-btn:hover  { color:var(--violet); }
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+
+/* ── Carbon tab ── */
+.carbon-hero { background:linear-gradient(135deg,var(--violet),#c17aab);border-radius:24px;padding:48px;color:#fff;text-align:center;margin-bottom:40px; }
+.carbon-hero h2 { font-size:clamp(1.8rem,4vw,3rem);font-weight:300;margin-bottom:10px; }
+.carbon-hero p { opacity:.8;max-width:520px;margin:0 auto 32px;line-height:1.7; }
+.carbon-stats { display:flex;justify-content:center;gap:40px;flex-wrap:wrap; }
+.carbon-stat { text-align:center; }
+.carbon-stat .big { font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:600;display:block; }
+.carbon-stat .lbl { font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;opacity:.8;margin-top:4px; }
+
+/* Progress bars */
+.progress-section { margin-bottom:40px; }
+.progress-section h3 { font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:24px; }
+.prog-row { margin-bottom:20px; }
+.prog-label { display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:8px; }
+.prog-bar { height:10px;border-radius:10px;background:rgba(45,30,58,.08);overflow:hidden; }
+.prog-fill { height:100%;border-radius:10px;background:linear-gradient(to right,var(--sage),var(--violet));transition:width 1.4s cubic-bezier(.23,1,.32,1);width:0; }
+
+/* ── Materials tab ── */
+.materials-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:48px; }
+.mat-card { background:#fff;border-radius:20px;padding:28px;box-shadow:var(--shadow-sm);transition:transform .3s var(--ease-spring); }
+.mat-card:hover { transform:translateY(-6px); }
+.mat-icon { font-size:2.8rem;margin-bottom:14px;display:block; }
+.mat-name { font-family:'Cormorant Garamond',serif;font-size:1.2rem;margin-bottom:8px; }
+.mat-desc { font-size:.83rem;color:rgba(45,30,58,.65);line-height:1.7;margin-bottom:14px; }
+.mat-used { font-size:.75rem;background:var(--mint);color:var(--sage-deep);padding:5px 12px;border-radius:20px;display:inline-block; }
+
+/* Product material breakdown */
+.breakdown-table { width:100%;border-collapse:collapse;margin-bottom:48px; }
+.breakdown-table th { text-align:left;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(45,30,58,.5);padding:10px 16px;border-bottom:1px solid rgba(45,30,58,.08); }
+.breakdown-table td { padding:14px 16px;font-size:.85rem;border-bottom:1px solid rgba(45,30,58,.05); }
+.breakdown-table tr:hover td { background:rgba(123,94,167,.04); }
+.eco-pill { display:inline-flex;align-items:center;gap:4px;background:#e4f5e8;color:#3a8a55;border-radius:8px;padding:3px 10px;font-size:.7rem; }
+
+/* ── Ethical / Certificates tab ── */
+.cert-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:48px; }
+.cert-card {
+  border-radius:22px;overflow:hidden;box-shadow:var(--shadow-sm);
+  transition:transform .35s var(--ease-spring),box-shadow .35s;
+  border:2px solid transparent;
+  background:#fff;
+}
+.cert-card:hover { transform:translateY(-8px);box-shadow:var(--shadow-lg);border-color:var(--violet); }
+.cert-header { padding:28px 24px 20px;text-align:center; }
+.cert-seal { width:80px;height:80px;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:2rem;box-shadow:0 4px 16px rgba(45,30,58,.1); }
+.cert-name { font-family:'Cormorant Garamond',serif;font-size:1.15rem;margin-bottom:6px; }
+.cert-body  { border-top:1px solid rgba(45,30,58,.06);padding:20px 24px; }
+.cert-body p { font-size:.82rem;color:rgba(45,30,58,.65);line-height:1.7; }
+.cert-status { display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:.72rem;color:var(--sage-deep);font-weight:500; }
+
+/* Artisan section */
+.artisan-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px; }
+.artisan-card { background:white;border-radius:16px;padding:20px;box-shadow:var(--shadow-sm);text-align:center;transition:transform .3s; }
+.artisan-card:hover { transform:translateY(-5px); }
+.artisan-flag { font-size:2.5rem;margin-bottom:8px;display:block; }
+.artisan-country { font-family:'Cormorant Garamond',serif;font-size:1rem;margin-bottom:4px; }
+.artisan-detail  { font-size:.75rem;color:rgba(45,30,58,.6);line-height:1.5; }
+.wage-badge { background:linear-gradient(135deg,var(--sage),var(--mint));color:var(--ink);font-size:.68rem;border-radius:8px;padding:3px 10px;margin-top:8px;display:inline-block; }
+
+@media(max-width:960px){ .materials-grid,.cert-grid { grid-template-columns:1fr 1fr; } .artisan-grid { grid-template-columns:1fr 1fr; } }
+@media(max-width:600px){ .materials-grid,.cert-grid,.artisan-grid { grid-template-columns:1fr; } .carbon-stats { gap:24px; } .tab-btn { padding:12px 18px;font-size:.75rem; } }
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-ring"></div>
+<div id="particles"></div>
+<div class="toast" id="toast"></div>
+<div id="app-nav"></div>
+
+<div class="page-hero">
+  <span class="section-eyebrow">Our Commitment</span>
+  <h1 class="section-title"><em>Sustainability</em> &amp; Ethics</h1>
+  <div class="section-div"></div>
+  <p style="max-width:540px;margin:20px auto 0;font-size:.95rem;opacity:.65;line-height:1.75;">Every stitch, every sourcing decision, every partner — chosen with the planet and people in mind. Here's our full story.</p>
+</div>
+
+<div class="tabs-wrap" style="padding-top:48px;padding-bottom:100px;">
+  <!-- Tab Nav -->
+  <div class="tab-nav">
+    <button class="tab-btn active" data-tab="carbon">🌍 Carbon &amp; Emissions</button>
+    <button class="tab-btn" data-tab="materials">🌿 Eco Materials</button>
+    <button class="tab-btn" data-tab="ethical">🤝 Ethical Practices</button>
+    <button class="tab-btn" data-tab="certifications">🏅 Certifications</button>
+  </div>
+
+  <!-- TAB 1: Carbon & Emissions -->
+  <div class="tab-panel active" id="tab-carbon">
+    <div class="carbon-hero reveal">
+      <h2>Our Carbon <em>Promise</em></h2>
+      <p>We measure, reduce, and offset 100% of our carbon footprint — from raw material to your doorstep. Here's the breakdown.</p>
+      <div class="carbon-stats">
+        <div class="carbon-stat"><span class="big">−62%</span><span class="lbl">vs Fast Fashion avg</span></div>
+        <div class="carbon-stat"><span class="big">100%</span><span class="lbl">Carbon Offset</span></div>
+        <div class="carbon-stat"><span class="big">18.4t</span><span class="lbl">CO₂ Saved This Year</span></div>
+        <div class="carbon-stat"><span class="big">0</span><span class="lbl">New Synthetic Fibres</span></div>
+      </div>
+    </div>
+
+    <div class="progress-section reveal">
+      <h3>Emissions Breakdown — per garment</h3>
+      <div class="prog-row"><div class="prog-label"><span>Raw Materials</span><span>0.8 kg CO₂</span></div><div class="prog-bar"><div class="prog-fill" data-w="18"></div></div></div>
+      <div class="prog-row"><div class="prog-label"><span>Manufacturing</span><span>1.1 kg CO₂</span></div><div class="prog-bar"><div class="prog-fill" data-w="25"></div></div></div>
+      <div class="prog-row"><div class="prog-label"><span>Transport</span><span>0.6 kg CO₂</span></div><div class="prog-bar"><div class="prog-fill" data-w="14" style="background:linear-gradient(to right,var(--rose),var(--violet))"></div></div></div>
+      <div class="prog-row"><div class="prog-label"><span>Packaging</span><span>0.2 kg CO₂</span></div><div class="prog-bar"><div class="prog-fill" data-w="5" style="background:linear-gradient(to right,var(--gold),var(--butter))"></div></div></div>
+      <div class="prog-row"><div class="prog-label"><span style="color:var(--sage-deep);font-weight:500;">Offset via Reforestation ✅</span><span style="color:var(--sage-deep);">−2.7 kg CO₂</span></div><div class="prog-bar"><div class="prog-fill" data-w="100" style="background:linear-gradient(to right,var(--sage),var(--sage-deep))"></div></div></div>
+    </div>
+
+    <div class="reveal">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:24px;">How We Offset</h3>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+        <div style="background:linear-gradient(135deg,#e4f5e8,#f0fff8);border-radius:18px;padding:26px;">
+          <div style="font-size:2.5rem;margin-bottom:10px;">🌳</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;margin-bottom:8px;">Reforestation</div>
+          <p style="font-size:.82rem;opacity:.7;line-height:1.65;">Partner with Trees for the Future — 3 trees planted per order.</p>
+        </div>
+        <div style="background:linear-gradient(135deg,#e4f0ff,#f0f4ff);border-radius:18px;padding:26px;">
+          <div style="font-size:2.5rem;margin-bottom:10px;">☀️</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;margin-bottom:8px;">Renewable Energy</div>
+          <p style="font-size:.82rem;opacity:.7;line-height:1.65;">All our partner workshops run on 100% certified renewable energy.</p>
+        </div>
+        <div style="background:linear-gradient(135deg,#fdf0c2,#fff8e1);border-radius:18px;padding:26px;">
+          <div style="font-size:2.5rem;margin-bottom:10px;">🌊</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;margin-bottom:8px;">Ocean Plastic Credits</div>
+          <p style="font-size:.82rem;opacity:.7;line-height:1.65;">1% of revenue funds ocean plastic retrieval via CleanHub.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: Eco Materials -->
+  <div class="tab-panel" id="tab-materials">
+    <div class="section-hdr reveal" style="margin-bottom:36px;">
+      <span class="section-eyebrow">What We're Made Of</span>
+      <h2 class="section-title">Our <em>Eco-Friendly</em> Materials</h2>
+      <div class="section-div"></div>
+    </div>
+
+    <div class="materials-grid">
+      <div class="mat-card reveal"><span class="mat-icon">♻️</span><div class="mat-name">Recycled PET Fabric</div><p class="mat-desc">Made from post-consumer plastic bottles — each metre of fabric diverts ~8 bottles from landfill. Soft, durable, and fully traceable.</p><span class="mat-used">Used in: Glass Slipper, Timeless Companion</span></div>
+      <div class="mat-card reveal"><span class="mat-icon">🌿</span><div class="mat-name">Organic Cotton</div><p class="mat-desc">GOTS-certified cotton grown without synthetic pesticides. Uses 90% less water than conventional cotton and supports healthy soil.</p><span class="mat-used">Used in: Storykeeper, Timeless Companion</span></div>
+      <div class="mat-card reveal"><span class="mat-icon">🪡</span><div class="mat-name">Reclaimed Silk</div><p class="mat-desc">Sourced from deadstock fashion houses and surplus mills. Zero new silk production — vintage luxury, zero waste.</p><span class="mat-used">Used in: Golden Thread, Timeless Companion</span></div>
+      <div class="mat-card reveal"><span class="mat-icon">🥿</span><div class="mat-name">Upcycled Leather Scraps</div><p class="mat-desc">Offcuts from European leather goods manufacturers that would otherwise be incinerated. Each piece is unique by nature.</p><span class="mat-used">Used in: Glass Slipper Muse</span></div>
+      <div class="mat-card reveal"><span class="mat-icon">⚙️</span><div class="mat-name">Recycled Metals</div><p class="mat-desc">925 recycled sterling silver and brass. Conflict-free, traceable, and certified by the Responsible Jewellery Council.</p><span class="mat-used">Used in: Infinite Gem Accessories</span></div>
+      <div class="mat-card reveal"><span class="mat-icon">🌾</span><div class="mat-name">TENCEL™ Lyocell</div><p class="mat-desc">Wood-pulp fibre from sustainably managed forests. Closed-loop production — 99% of water and solvents are recycled.</p><span class="mat-used">Used in: Dragonheart Ethic Line</span></div>
+    </div>
+
+    <div class="reveal">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:20px;">Product Material Breakdown</h3>
+      <table class="breakdown-table">
+        <thead><tr><th>Product</th><th>Primary Material</th><th>Secondary</th><th>Carbon Saving</th><th>Eco Score</th></tr></thead>
+        <tbody id="material-table"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 3: Ethical Practices -->
+  <div class="tab-panel" id="tab-ethical">
+    <div class="carbon-hero reveal" style="background:linear-gradient(135deg,var(--sage-deep),var(--sage));">
+      <h2>Fair Wages. Safe Spaces. <em>Human Dignity.</em></h2>
+      <p>We visit every partner workshop. We audit wages. We publish what we find — because transparency is not optional.</p>
+      <div class="carbon-stats">
+        <div class="carbon-stat"><span class="big">60+</span><span class="lbl">Artisan Partners</span></div>
+        <div class="carbon-stat"><span class="big">12</span><span class="lbl">Countries</span></div>
+        <div class="carbon-stat"><span class="big">100%</span><span class="lbl">Living Wage Paid</span></div>
+        <div class="carbon-stat"><span class="big">0</span><span class="lbl">Child Labour</span></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin:40px 0 24px;">Our Artisan Partners by Region</h3>
+      <div class="artisan-grid">
+        <div class="artisan-card"><span class="artisan-flag">🇮🇳</span><div class="artisan-country">India</div><div class="artisan-detail">Jaipur block-print cooperative, 24 artisans, certified fair trade</div><span class="wage-badge">+38% above local avg</span></div>
+        <div class="artisan-card"><span class="artisan-flag">🇲🇦</span><div class="artisan-country">Morocco</div><div class="artisan-detail">Fez leather artisans, traditional tannery techniques, solar-powered</div><span class="wage-badge">+41% above local avg</span></div>
+        <div class="artisan-card"><span class="artisan-flag">🇵🇹</span><div class="artisan-country">Portugal</div><div class="artisan-detail">Porto stitching atelier, all deadstock fabric, EU social standards</div><span class="wage-badge">+22% above local avg</span></div>
+        <div class="artisan-card"><span class="artisan-flag">🇬🇭</span><div class="artisan-country">Ghana</div><div class="artisan-detail">Accra weaving collective, women-owned, Fairtrade gold certified</div><span class="wage-badge">+52% above local avg</span></div>
+        <div class="artisan-card"><span class="artisan-flag">🇯🇵</span><div class="artisan-country">Japan</div><div class="artisan-detail">Kyoto silk reclaimers, zero-waste offcut specialists</div><span class="wage-badge">+18% above local avg</span></div>
+        <div class="artisan-card"><span class="artisan-flag">🇧🇷</span><div class="artisan-country">Brazil</div><div class="artisan-detail">São Paulo upcycling studio, certified B Corp partner</div><span class="wage-badge">+35% above local avg</span></div>
+        <div class="artisan-card"><span class="artisan-flag">🇮🇹</span><div class="artisan-country">Italy</div><div class="artisan-detail">Milanese jewellery bench, recycled silver, Responsible Jewellery Council</div><span class="wage-badge">+15% above local avg</span></div>
+        <div class="artisan-card"><span class="artisan-flag">🇵🇪</span><div class="artisan-country">Peru</div><div class="artisan-detail">Lima alpaca weavers cooperative, heritage techniques, no synthetic dyes</div><span class="wage-badge">+44% above local avg</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 4: Certifications -->
+  <div class="tab-panel" id="tab-certifications">
+    <div class="section-hdr reveal" style="margin-bottom:36px;">
+      <span class="section-eyebrow">Independently Verified</span>
+      <h2 class="section-title">Our <em>Certifications</em></h2>
+      <div class="section-div"></div>
+      <p style="max-width:500px;margin:16px auto 0;font-size:.9rem;opacity:.65;line-height:1.7;">We don't self-certify. Every claim is independently audited and renewed annually. Click any certificate to view the official document.</p>
+    </div>
+    <div class="cert-grid">
+      <div class="cert-card reveal">
+        <div class="cert-header">
+          <div class="cert-seal" style="background:linear-gradient(135deg,#e4f5e8,#c8ead8);">🌿</div>
+          <div class="cert-name">GOTS Certified</div>
+          <p style="font-size:.78rem;opacity:.6;">Global Organic Textile Standard</p>
+        </div>
+        <div class="cert-body">
+          <p>Certifies that all cotton used meets strict ecological and social criteria from harvest to finished garment, including no toxic dyes.</p>
+          <div class="cert-status">✅ Active — Renewed Jan 2025</div>
+        </div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-header">
+          <div class="cert-seal" style="background:linear-gradient(135deg,#fff3cd,#fdecc0);">🏅</div>
+          <div class="cert-name">Fair Trade Certified™</div>
+          <p style="font-size:.78rem;opacity:.6;">Fair Trade USA</p>
+        </div>
+        <div class="cert-body">
+          <p>Guarantees fair prices, safe working conditions, and community development funding for all certified partner workshops.</p>
+          <div class="cert-status">✅ Active — Renewed Mar 2025</div>
+        </div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-header">
+          <div class="cert-seal" style="background:linear-gradient(135deg,#e4edff,#dcd3f0);">♻️</div>
+          <div class="cert-name">GRS — Global Recycled Standard</div>
+          <p style="font-size:.78rem;opacity:.6;">Textile Exchange</p>
+        </div>
+        <div class="cert-body">
+          <p>Certifies the recycled content of all our PET, metal, and fibre products — ensuring traceability back to the waste source.</p>
+          <div class="cert-status">✅ Active — Renewed Feb 2025</div>
+        </div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-header">
+          <div class="cert-seal" style="background:linear-gradient(135deg,#e0f4ff,#c4e8f5);">💎</div>
+          <div class="cert-name">Responsible Jewellery Council</div>
+          <p style="font-size:.78rem;opacity:.6;">RJC Certification</p>
+        </div>
+        <div class="cert-body">
+          <p>All Infinite Gem silver and gemstones are RJC certified — covering human rights, labour rights, environmental and ethical practices.</p>
+          <div class="cert-status">✅ Active — Renewed Apr 2025</div>
+        </div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-header">
+          <div class="cert-seal" style="background:linear-gradient(135deg,#fde8f0,#f5d6e0);">🌱</div>
+          <div class="cert-name">1% for the Planet</div>
+          <p style="font-size:.78rem;opacity:.6;">Certified Member</p>
+        </div>
+        <div class="cert-body">
+          <p>1% of all annual revenue is donated to vetted environmental non-profits focused on climate, land, and water stewardship.</p>
+          <div class="cert-status">✅ Active — Member since 2023</div>
+        </div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-header">
+          <div class="cert-seal" style="background:linear-gradient(135deg,#f0fff8,#c8ead8);">🌳</div>
+          <div class="cert-name">B Corp Pending</div>
+          <p style="font-size:.78rem;opacity:.6;">B Lab Assessment</p>
+        </div>
+        <div class="cert-body">
+          <p>We are in the final stages of B Corp certification, having scored 92/200 on the B Impact Assessment — above the threshold of 80.</p>
+          <div class="cert-status">⏳ Pending — Expected Q3 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="app-footer"></div>
+<script src="../js/main.js"></script>
+<script src="../js/nav-template.js"></script>
+<script src="../js/products-data.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  injectNav(); injectFooter();
+
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn,.tab-panel').forEach(el=>el.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+      // Animate progress bars when carbon tab opens
+      if (btn.dataset.tab === 'carbon') animateProgress();
+    });
+  });
+  animateProgress();
+
+  // Material table
+  const tbody = document.getElementById('material-table');
+  PRODUCTS.forEach(p => {
+    const mats = p.materials.split(', ');
+    tbody.innerHTML += `<tr>
+      <td><strong>${p.emoji} ${p.name}</strong></td>
+      <td>${mats[0] || '—'}</td>
+      <td>${mats[1] || '—'}</td>
+      <td><span class="eco-pill">🌱 ${p.carbon}</span></td>
+      <td><strong>${p.ecoScore}/10</strong></td>
+    </tr>`;
+  });
+});
+
+function animateProgress() {
+  setTimeout(() => {
+    document.querySelectorAll('.prog-fill').forEach(bar => {
+      bar.style.width = (bar.dataset.w || 50) + '%';
+    });
+  }, 200);
+}
+</script>
+</body>
+</html>

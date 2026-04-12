@@ -1,0 +1,108 @@
+/* ════════════════════════════════════════════
+   MAGIC CLOSET — nav.css
+   Navigation, footer, card colours
+════════════════════════════════════════════ */
+
+/* ── NAV ── */
+nav {
+  position:fixed;top:0;width:100%;z-index:1000;
+  padding:0 3%;height:70px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(253,248,242,0.88);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(201,168,76,0.15);
+  transition:box-shadow .3s;
+}
+nav.scrolled { box-shadow:0 4px 30px rgba(45,30,58,0.08); }
+
+.nav-left { display:flex;align-items:center;gap:12px; }
+.nav-left a[style] {
+  filter:drop-shadow(0 3px 10px rgba(123,94,167,0.3));
+  transition:transform .35s var(--ease-spring),filter .3s;
+  border-radius:50%;
+}
+.nav-left a[style]:hover {
+  transform:rotate(6deg) scale(1.1);
+  filter:drop-shadow(0 6px 20px rgba(123,94,167,0.5));
+}
+
+.nav-brand { display:flex;flex-direction:column;line-height:1.1; }
+.nav-brand-name { font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.3rem;color:var(--violet); }
+.nav-brand-sub  { font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--rose-deep);opacity:.9; }
+
+.nav-links { display:flex;gap:26px;list-style:none; }
+.nav-links a {
+  font-size:.73rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink);opacity:.65;
+  position:relative;padding-bottom:2px;
+  transition:opacity .2s,color .2s;
+}
+.nav-links a::after { content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--gold);transition:width .3s; }
+.nav-links a:hover  { opacity:1;color:var(--violet); }
+.nav-links a:hover::after { width:100%; }
+
+.nav-actions { display:flex;gap:10px;align-items:center; }
+.nav-icon-btn { background:none;border:none;font-size:1.1rem;transition:transform .2s; }
+.nav-icon-btn:hover { transform:scale(1.15); }
+
+.cart-pill {
+  background: var(--grad-hero);
+  color:#fff;border:none;padding:9px 20px;border-radius:40px;
+  font-size:.75rem;letter-spacing:.08em;
+  transition:transform .25s,box-shadow .25s;
+  box-shadow:0 4px 16px rgba(123,94,167,.3);
+}
+.cart-pill:hover { transform:translateY(-2px);box-shadow:0 8px 24px rgba(123,94,167,.4); }
+
+/* ── FOOTER ── */
+footer { background:var(--ink);color:rgba(255,255,255,.7);padding:60px 3% 28px; }
+.footer-grid {
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:40px;max-width:1200px;margin:0 auto 40px;
+}
+.footer-desc  { font-size:.8rem;line-height:1.8;opacity:.6;margin-top:14px;max-width:270px; }
+.footer-col h4{ font-size:.67rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:16px; }
+.footer-links { list-style:none; }
+.footer-links li { margin-bottom:8px; }
+.footer-links a { color:rgba(255,255,255,.55);font-size:.82rem;transition:color .2s; }
+.footer-links a:hover { color:var(--rose); }
+.footer-social { display:flex;gap:10px;margin-top:20px; }
+.soc-btn {
+  width:34px;height:34px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;color:rgba(255,255,255,.6);
+  transition:all .25s;
+}
+.soc-btn:hover { background:var(--violet);border-color:var(--violet);color:#fff; }
+.footer-bottom {
+  text-align:center;padding-top:22px;
+  border-top:1px solid rgba(255,255,255,.08);
+  font-size:.75rem;opacity:.4;
+  max-width:1200px;margin:0 auto;
+}
+
+/* ── Card colour palettes ── */
+.cv-glass { background:linear-gradient(145deg,#f0e8ff,#e8d5f5,#fde8f0); }
+.cv-gold  { background:linear-gradient(145deg,#fff8e1,#fdecc0,#fef5d5); }
+.cv-story { background:linear-gradient(145deg,#e4f5e8,#d0edd6,#c8e8d4); }
+.cv-time  { background:linear-gradient(145deg,#eaedff,#d8deff,#e4dcf8); }
+.cv-drag  { background:linear-gradient(145deg,#ffe6e6,#ffd2d2,#f8c4c4); }
+.cv-gem   { background:linear-gradient(145deg,#e4f6ff,#ccedff,#c4e8f5); }
+
+.b-glass { background:#f0e8ff;color:#7b5ea7; }
+.b-gold  { background:#fff3cd;color:#9a7628; }
+.b-story { background:#e4f5e8;color:#3a8a55; }
+.b-time  { background:#eaedff;color:#4a5fa8; }
+.b-drag  { background:#ffe4e4;color:#a84a4a; }
+.b-gem   { background:#e0f4ff;color:#3a7a9a; }
+
+/* ── Responsive ── */
+@media(max-width:960px){
+  .footer-grid { grid-template-columns:1fr 1fr; }
+}
+@media(max-width:600px){
+  .nav-links  { display:none; }
+  nav         { padding:0 4%; }
+  .footer-grid{ grid-template-columns:1fr; }
+}

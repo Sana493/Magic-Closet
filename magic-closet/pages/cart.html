@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Your Bag — Magic Closet</title>
+<link rel="stylesheet" href="../css/base.css"/>
+<link rel="stylesheet" href="../css/nav.css"/>
+<style>
+.page-hero { padding:140px 3% 60px;text-align:center;background:linear-gradient(135deg,#fdf0f8,var(--cream) 60%,#f0fff8); }
+.cart-wrap { max-width:1100px;margin:0 auto;padding:40px 3% 100px;display:grid;grid-template-columns:1fr 340px;gap:40px; }
+/* Cart items */
+.cart-items { }
+.cart-empty { text-align:center;padding:80px 20px; }
+.cart-empty-icon { font-size:5rem;display:block;margin-bottom:20px;animation:floatEm 3s ease-in-out infinite; }
+.cart-item { display:flex;gap:18px;align-items:flex-start;padding:20px 0;border-bottom:1px solid rgba(45,30,58,.07); }
+.item-emoji{ width:80px;height:80px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0;background:var(--lavender); }
+.item-info { flex:1; }
+.item-name  { font-family:'Cormorant Garamond',serif;font-size:1.1rem;margin-bottom:4px; }
+.item-price { font-size:.88rem;color:var(--violet);font-weight:500;margin-bottom:10px; }
+.item-qty   { display:flex;align-items:center;gap:10px; }
+.qty-btn    { width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(45,30,58,.15);background:#fff;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:all .2s; }
+.qty-btn:hover { border-color:var(--violet);background:var(--lavender); }
+.qty-num    { font-size:.9rem;font-weight:500;min-width:24px;text-align:center; }
+.item-remove{ font-size:.75rem;color:rgba(45,30,58,.4);text-decoration:underline;cursor:pointer;transition:color .2s; }
+.item-remove:hover { color:var(--rose-deep); }
+/* Summary */
+.cart-summary { position:sticky;top:88px;height:fit-content;background:white;border-radius:24px;padding:32px;box-shadow:var(--shadow-md); }
+.cart-summary h2 { font-family:'Cormorant Garamond',serif;font-size:1.4rem;margin-bottom:24px; }
+.summary-row { display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:12px; }
+.summary-total { font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:500;border-top:2px solid rgba(45,30,58,.08);padding-top:16px;margin-top:8px; }
+.checkout-btn { width:100%;margin-top:20px;padding:15px;border-radius:40px;border:none;background:var(--grad-hero);color:#fff;font-family:'Jost',sans-serif;font-size:.88rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:transform .25s,box-shadow .25s;box-shadow:0 6px 20px rgba(123,94,167,.35); }
+.checkout-btn:hover { transform:translateY(-2px);box-shadow:0 10px 30px rgba(123,94,167,.45); }
+.eco-note { background:linear-gradient(135deg,#e4f5e8,#f0fff8);border-radius:14px;padding:14px 16px;margin-top:16px;font-size:.78rem;color:var(--sage-deep);line-height:1.6; }
+.donation-row { display:flex;align-items:center;gap:10px;margin-top:16px;padding:14px;background:var(--lavender);border-radius:12px;font-size:.8rem; }
+.donation-row input { accent-color:var(--violet); }
+@media(max-width:760px){ .cart-wrap { grid-template-columns:1fr; } .cart-summary { position:static; } }
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-ring"></div>
+<div id="particles"></div>
+<div class="toast" id="toast"></div>
+<div id="app-nav"></div>
+
+<div class="page-hero">
+  <span class="section-eyebrow">Your Collection</span>
+  <h1 class="section-title">Your Magical <em>Bag</em></h1>
+  <div class="section-div"></div>
+</div>
+
+<div class="cart-wrap">
+  <div class="cart-items" id="cart-items"></div>
+  <aside class="cart-summary" id="cart-summary" style="display:none;">
+    <h2>Order Summary</h2>
+    <div id="summary-lines"></div>
+    <div class="donation-row">
+      <input type="checkbox" id="donate-check" checked/>
+      <label for="donate-check">Add £1 to plant 3 trees 🌳</label>
+    </div>
+    <div class="summary-total">
+      <div class="summary-row">
+        <span>Total</span><span id="total-price">£0.00</span>
+      </div>
+    </div>
+    <button class="checkout-btn" onclick="checkout()">✨ Checkout Magically</button>
+    <div class="eco-note">🌍 Your order is carbon-neutral. Packaged in 100% plastic-free materials.</div>
+  </aside>
+</div>
+
+<div id="app-footer"></div>
+<script src="../js/main.js"></script>
+<script src="../js/nav-template.js"></script>
+<script src="../js/products-data.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  injectNav(); injectFooter();
+  renderCart();
+});
+
+function renderCart() {
+  const items = Cart.items;
+  const el = document.getElementById('cart-items');
+  const summary = document.getElementById('cart-summary');
+
+  if (!items.length) {
+    el.innerHTML = `<div class="cart-empty reveal">
+      <span class="cart-empty-icon">🛍️</span>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;margin-bottom:10px;">Your bag is empty</h2>
+      <p style="opacity:.6;margin-bottom:28px;">The enchanted pieces are waiting...</p>
+      <a href="shop.html" class="btn-primary">✨ Start Shopping</a>
+    </div>`;
+    summary.style.display='none';
+    return;
+  }
+
+  el.innerHTML = items.map(item => `
+    <div class="cart-item reveal" id="item-${item.name.replace(/\s/g,'_')}">
+      <div class="item-emoji" style="background:var(--lavender);">${item.emoji}</div>
+      <div class="item-info">
+        <div class="item-name">${item.name}</div>
+        <div class="item-price">£${item.price}</div>
+        <div class="item-qty">
+          <button class="qty-btn" onclick="changeQty('${item.name}',-1)">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty('${item.name}',1)">+</button>
+          <span class="item-remove" onclick="removeItem('${item.name}')">Remove</span>
+        </div>
+      </div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:500;">£${(item.price*item.qty).toFixed(2)}</div>
+    </div>`).join('');
+
+  // Summary
+  summary.style.display='block';
+  const subtotal = items.reduce((s,i)=>s+(i.price*i.qty),0);
+  const donation = document.getElementById('donate-check')?.checked ? 1 : 0;
+  document.getElementById('summary-lines').innerHTML = items.map(i=>`<div class="summary-row"><span>${i.emoji} ${i.name} ×${i.qty}</span><span>£${(i.price*i.qty).toFixed(2)}</span></div>`).join('');
+  document.getElementById('total-price').textContent = '£'+(subtotal+donation).toFixed(2);
+
+  document.getElementById('donate-check')?.addEventListener('change', () => {
+    const d = document.getElementById('donate-check').checked ? 1 : 0;
+    document.getElementById('total-price').textContent = '£'+(subtotal+d).toFixed(2);
+  });
+
+  // Reveal
+  document.querySelectorAll('.reveal').forEach(el=>{
+    el.classList.add('visible');
+  });
+}
+
+function changeQty(name, delta) {
+  const item = Cart.items.find(i=>i.name===name);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) Cart.items = Cart.items.filter(i=>i.name!==name);
+  Cart.save(); Cart.updateBadge(); renderCart();
+}
+
+function removeItem(name) {
+  Cart.remove(name); renderCart();
+  showToast('🗑️ Item removed from your bag');
+}
+
+function checkout() {
+  showToast('✨ Redirecting to magical checkout... 🌸');
+  setTimeout(()=>{ Cart.items=[]; Cart.save(); Cart.updateBadge(); renderCart(); }, 2000);
+}
+</script>
+</body>
+</html>

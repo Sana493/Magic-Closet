@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Supply Chain — Magic Closet</title>
+<link rel="stylesheet" href="../css/base.css"/>
+<link rel="stylesheet" href="../css/nav.css"/>
+<style>
+.page-hero { padding:140px 3% 60px;text-align:center;background:linear-gradient(135deg,#e8dff5,#fdf8f2 60%,#e4f5e8); }
+.chain-wrap { max-width:1100px;margin:0 auto;padding:60px 3% 100px; }
+
+/* ── SVG World Map ── */
+.map-section { background:white;border-radius:28px;box-shadow:var(--shadow-md);overflow:hidden;margin-bottom:60px; }
+.map-header { padding:28px 36px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px; }
+.map-header h2 { font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400; }
+.map-legend { display:flex;gap:16px;flex-wrap:wrap; }
+.legend-item { display:flex;align-items:center;gap:6px;font-size:.75rem; }
+.legend-dot  { width:12px;height:12px;border-radius:50%; }
+.map-container { position:relative;padding:20px 30px 30px; }
+.world-map-svg { width:100%;height:auto;display:block; }
+
+/* Animated supply chain pins */
+.pin-pulse {
+  animation:pinPulse 2s ease-in-out infinite;
+  transform-origin:center;
+}
+@keyframes pinPulse { 0%,100%{opacity:.7;r:8;}50%{opacity:1;r:11;} }
+.supply-tooltip {
+  position:absolute;background:white;border-radius:14px;padding:14px 18px;
+  box-shadow:var(--shadow-md);font-size:.82rem;pointer-events:none;
+  min-width:180px;z-index:10;opacity:0;transition:opacity .25s;
+  border:1px solid rgba(123,94,167,.15);
+}
+.supply-tooltip.visible { opacity:1; }
+
+/* ── Journey timeline ── */
+.journey-title { font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;margin-bottom:40px;text-align:center; }
+.journey { position:relative;padding:0 20px; }
+.journey::before { content:'';position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--violet),var(--rose),var(--sage));transform:translateX(-50%);opacity:.3; }
+.journey-step { display:grid;grid-template-columns:1fr 60px 1fr;gap:0;margin-bottom:48px;align-items:center; }
+.journey-step:nth-child(even) .step-left  { order:3; }
+.journey-step:nth-child(even) .step-mid   { order:2; }
+.journey-step:nth-child(even) .step-right { order:1; }
+.step-card { background:white;border-radius:18px;padding:22px 20px;box-shadow:var(--shadow-sm);transition:transform .3s var(--ease-spring); }
+.step-card:hover { transform:translateY(-5px); }
+.step-icon { font-size:1.8rem;margin-bottom:8px;display:block; }
+.step-num  { font-family:'Cormorant Garamond',serif;font-size:.75rem;color:var(--violet);letter-spacing:.15em;text-transform:uppercase;margin-bottom:5px; }
+.step-name { font-family:'Cormorant Garamond',serif;font-size:1.1rem;margin-bottom:6px; }
+.step-desc { font-size:.8rem;color:rgba(45,30,58,.65);line-height:1.6; }
+.step-loc  { font-size:.72rem;margin-top:8px;color:var(--violet);opacity:.8; }
+.step-mid  { display:flex;justify-content:center; }
+.step-node { width:44px;height:44px;border-radius:50%;background:var(--grad-hero);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;box-shadow:0 4px 14px rgba(123,94,167,.35);z-index:1; }
+.step-empty { background:transparent;box-shadow:none; }
+
+/* Product tracker */
+.tracker-section { background:linear-gradient(135deg,#f0e8ff,#fdf8f2);border-radius:24px;padding:40px;margin-top:60px; }
+.tracker-title { font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:24px;text-align:center; }
+.tracker-select { width:100%;padding:12px 18px;border-radius:12px;border:1.5px solid rgba(123,94,167,.25);background:white;font-family:'Jost',sans-serif;font-size:.9rem;color:var(--ink);outline:none;margin-bottom:28px; }
+.tracker-result { display:none; }
+.tracker-result.visible { display:block; }
+.chain-steps { display:flex;gap:0;overflow-x:auto;padding-bottom:12px; }
+.chain-step { flex:1;min-width:140px;text-align:center;position:relative;padding:0 8px; }
+.chain-step::after { content:'→';position:absolute;right:-8px;top:24px;color:var(--violet);font-size:1.2rem;opacity:.5; }
+.chain-step:last-child::after { display:none; }
+.chain-step-icon { width:52px;height:52px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem; }
+.chain-step-label { font-size:.75rem;font-weight:500;margin-bottom:4px; }
+.chain-step-detail { font-size:.68rem;color:rgba(45,30,58,.55);line-height:1.4; }
+.chain-step.done .chain-step-icon { background:linear-gradient(135deg,var(--sage),var(--mint)); }
+.chain-step.active .chain-step-icon { background:var(--grad-hero);animation:pinPulse 2s ease-in-out infinite; }
+.chain-step.pending .chain-step-icon { background:rgba(45,30,58,.06); }
+
+@media(max-width:760px){ .journey::before { left:20px; } .journey-step { grid-template-columns:40px 1fr; } .step-empty { display:none; } .step-mid { order:1!important; } .step-left,.step-right { order:2!important; grid-column:2; } .step-node { width:36px;height:36px;font-size:.85rem; } }
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-ring"></div>
+<div id="particles"></div>
+<div class="toast" id="toast"></div>
+<div id="app-nav"></div>
+
+<div class="page-hero">
+  <span class="section-eyebrow">Full Transparency</span>
+  <h1 class="section-title">Our <em>Supply Chain</em></h1>
+  <div class="section-div"></div>
+  <p style="max-width:520px;margin:20px auto 0;font-size:.95rem;opacity:.65;line-height:1.75;">From raw material to your wardrobe — every step, every partner, every mile. No secrets, only stories.</p>
+</div>
+
+<div class="chain-wrap">
+
+  <!-- WORLD MAP -->
+  <div class="map-section reveal">
+    <div class="map-header">
+      <h2>Where Our Garments <em>Are Born</em></h2>
+      <div class="map-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#7b5ea7;"></div><span>Material Sourcing</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#7ab89a;"></div><span>Manufacturing</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e8a0b8;"></div><span>Distribution Hub</span></div>
+      </div>
+    </div>
+    <div class="map-container" id="map-container">
+      <!-- Simplified SVG world map with pins -->
+      <svg class="world-map-svg" viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg">
+        <!-- Ocean background -->
+        <rect width="900" height="460" fill="#edf4fb" rx="8"/>
+        <!-- Simplified continent outlines -->
+        <!-- North America -->
+        <path d="M 80 80 L 200 70 L 230 120 L 220 180 L 190 220 L 160 240 L 130 220 L 90 180 L 70 140 Z" fill="#e8dff5" stroke="#d0c8e8" stroke-width="1.5"/>
+        <!-- South America -->
+        <path d="M 160 260 L 210 255 L 225 300 L 215 360 L 185 400 L 155 390 L 140 350 L 145 290 Z" fill="#e8dff5" stroke="#d0c8e8" stroke-width="1.5"/>
+        <!-- Europe -->
+        <path d="M 400 75 L 470 68 L 480 95 L 460 115 L 430 120 L 405 105 Z" fill="#e8dff5" stroke="#d0c8e8" stroke-width="1.5"/>
+        <!-- Africa -->
+        <path d="M 420 130 L 490 125 L 510 170 L 505 240 L 475 295 L 440 295 L 415 245 L 410 180 Z" fill="#e8dff5" stroke="#d0c8e8" stroke-width="1.5"/>
+        <!-- Asia -->
+        <path d="M 500 70 L 700 60 L 730 100 L 720 160 L 680 185 L 620 180 L 570 165 L 525 140 L 500 105 Z" fill="#e8dff5" stroke="#d0c8e8" stroke-width="1.5"/>
+        <!-- India subcontinent -->
+        <path d="M 590 160 L 630 155 L 640 200 L 615 235 L 590 220 L 580 185 Z" fill="#e8dff5" stroke="#d0c8e8" stroke-width="1.5"/>
+        <!-- South East Asia -->
+        <path d="M 680 175 L 730 170 L 745 210 L 720 225 L 690 210 Z" fill="#e8dff5" stroke="#d0c8e8" stroke-width="1.5"/>
+        <!-- Australia -->
+        <path d="M 720 285 L 820 278 L 840 330 L 810 365 L 760 368 L 725 340 Z" fill="#e8dff5" stroke="#d0c8e8" stroke-width="1.5"/>
+
+        <!-- Supply chain connecting lines (animated) -->
+        <g stroke-dasharray="6,4" stroke-width="1.5" fill="none" opacity=".45">
+          <path d="M 610 195 L 440 90 Q 440 90 450 90" stroke="#7b5ea7" stroke-dashoffset="0">
+            <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="2s" repeatCount="indefinite"/>
+          </path>
+          <path d="M 160 310 L 440 90" stroke="#e8a0b8" stroke-dashoffset="0">
+            <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="2.5s" repeatCount="indefinite"/>
+          </path>
+          <path d="M 450 90 L 200 310 Q 190 320 185 340" stroke="#7ab89a" stroke-dashoffset="0">
+            <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="3s" repeatCount="indefinite"/>
+          </path>
+          <path d="M 445 94 L 760 320 Q 770 328 775 330" stroke="#c9a84c" stroke-dashoffset="0">
+            <animate attributeName="stroke-dashoffset" from="0" to="-20" dur="2.8s" repeatCount="indefinite"/>
+          </path>
+        </g>
+
+        <!-- Pins: Material sourcing (violet) -->
+        <g id="pins-sourcing" fill="#7b5ea7">
+          <!-- India (Jaipur) -->
+          <circle cx="610" cy="195" r="9" opacity=".85" class="pin-pulse" style="animation-delay:.2s"/>
+          <circle cx="610" cy="195" r="16" opacity=".15"/>
+          <text x="610" y="192" text-anchor="middle" font-size="9" fill="white" font-weight="bold">🇮🇳</text>
+          <!-- Japan (Kyoto) -->
+          <circle cx="738" cy="155" r="8" opacity=".85" class="pin-pulse" style="animation-delay:.6s"/>
+          <text x="738" y="152" text-anchor="middle" font-size="8" fill="white" font-weight="bold">🇯🇵</text>
+          <!-- Peru -->
+          <circle cx="165" cy="315" r="8" opacity=".85" class="pin-pulse" style="animation-delay:1s"/>
+          <text x="165" y="312" text-anchor="middle" font-size="8" fill="white" font-weight="bold">🇵🇪</text>
+          <!-- Ghana -->
+          <circle cx="435" cy="212" r="8" opacity=".85" class="pin-pulse" style="animation-delay:1.4s"/>
+          <text x="435" y="209" text-anchor="middle" font-size="8" fill="white" font-weight="bold">🇬🇭</text>
+        </g>
+
+        <!-- Pins: Manufacturing (sage) -->
+        <g id="pins-mfg" fill="#7ab89a">
+          <!-- Morocco -->
+          <circle cx="425" cy="140" r="9" opacity=".85" class="pin-pulse" style="animation-delay:.4s"/>
+          <circle cx="425" cy="140" r="16" opacity=".15"/>
+          <text x="425" y="137" text-anchor="middle" font-size="9" fill="white" font-weight="bold">🇲🇦</text>
+          <!-- Portugal -->
+          <circle cx="400" cy="95" r="8" opacity=".85" class="pin-pulse" style="animation-delay:.8s"/>
+          <text x="400" y="92" text-anchor="middle" font-size="8" fill="white" font-weight="bold">🇵🇹</text>
+          <!-- Italy -->
+          <circle cx="453" cy="97" r="8" opacity=".85" class="pin-pulse" style="animation-delay:1.2s"/>
+          <text x="453" y="94" text-anchor="middle" font-size="8" fill="white" font-weight="bold">🇮🇹</text>
+          <!-- Brazil -->
+          <circle cx="190" cy="330" r="8" opacity=".85" class="pin-pulse" style="animation-delay:1.6s"/>
+          <text x="190" y="327" text-anchor="middle" font-size="8" fill="white" font-weight="bold">🇧🇷</text>
+        </g>
+
+        <!-- Pins: Distribution hub (rose) -->
+        <g fill="#e8a0b8">
+          <!-- London (HQ) -->
+          <circle cx="418" cy="82" r="12" opacity=".9" class="pin-pulse" style="animation-delay:0s"/>
+          <circle cx="418" cy="82" r="22" opacity=".12"/>
+          <text x="418" y="79" text-anchor="middle" font-size="11" fill="white" font-weight="bold">🇬🇧</text>
+          <text x="418" y="106" text-anchor="middle" font-size="8.5" fill="#7b5ea7" font-weight="bold" font-family="Georgia,serif" font-style="italic">HQ</text>
+          <!-- NYC Distribution -->
+          <circle cx="175" cy="145" r="9" opacity=".85" class="pin-pulse" style="animation-delay:.5s"/>
+          <text x="175" y="142" text-anchor="middle" font-size="8" fill="white" font-weight="bold">🇺🇸</text>
+          <!-- Sydney -->
+          <circle cx="775" cy="330" r="8" opacity=".85" class="pin-pulse" style="animation-delay:.9s"/>
+          <text x="775" y="327" text-anchor="middle" font-size="8" fill="white" font-weight="bold">🇦🇺</text>
+        </g>
+
+        <!-- Labels -->
+        <text x="610" y="215" text-anchor="middle" font-size="9" fill="#7b5ea7" font-family="Georgia,serif" font-style="italic">Jaipur</text>
+        <text x="425" y="160" text-anchor="middle" font-size="9" fill="#7ab89a" font-family="Georgia,serif" font-style="italic">Fez</text>
+        <text x="418" y="120" text-anchor="middle" font-size="9" fill="#e8a0b8" font-family="Georgia,serif" font-style="italic">London</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- JOURNEY TIMELINE -->
+  <div class="reveal">
+    <h2 class="journey-title">The Journey of a <em>Magic Closet</em> Piece</h2>
+    <div class="journey">
+      <div class="journey-step">
+        <div class="step-card step-left">
+          <span class="step-icon">🌱</span>
+          <div class="step-num">Step 01</div>
+          <div class="step-name">Material Recovery</div>
+          <p class="step-desc">Deadstock fabric, post-consumer bottles, rescued leather, and surplus silk are collected from certified waste streams and partner mills.</p>
+          <div class="step-loc">📍 Multiple countries — audited quarterly</div>
+        </div>
+        <div class="step-mid"><div class="step-node">1</div></div>
+        <div class="step-card step-right step-empty"></div>
+      </div>
+      <div class="journey-step">
+        <div class="step-card step-left step-empty"></div>
+        <div class="step-mid"><div class="step-node">2</div></div>
+        <div class="step-card step-right">
+          <span class="step-icon">🔬</span>
+          <div class="step-num">Step 02</div>
+          <div class="step-name">Material Testing &amp; Certification</div>
+          <p class="step-desc">All incoming materials are tested for harmful substances (OEKO-TEX), verified for recycled content (GRS), and checked against our ethical sourcing policy.</p>
+          <div class="step-loc">📍 Accredited third-party labs</div>
+        </div>
+      </div>
+      <div class="journey-step">
+        <div class="step-card step-left">
+          <span class="step-icon">✂️</span>
+          <div class="step-num">Step 03</div>
+          <div class="step-name">Artisan Manufacturing</div>
+          <p class="step-desc">Crafted by our vetted partner ateliers — each paid a verified living wage. Zero-waste cutting patterns and natural dyes where possible. No overtime, no child labour.</p>
+          <div class="step-loc">📍 Portugal · Morocco · India · Italy</div>
+        </div>
+        <div class="step-mid"><div class="step-node">3</div></div>
+        <div class="step-card step-right step-empty"></div>
+      </div>
+      <div class="journey-step">
+        <div class="step-card step-left step-empty"></div>
+        <div class="step-mid"><div class="step-node">4</div></div>
+        <div class="step-card step-right">
+          <span class="step-icon">🎁</span>
+          <div class="step-num">Step 04</div>
+          <div class="step-name">Packaging &amp; Dispatch</div>
+          <p class="step-desc">100% plastic-free packaging: FSC-certified kraft paper, water-based ink, compostable mailers. All shipped carbon-neutral via DPD Green.</p>
+          <div class="step-loc">📍 London fulfilment hub</div>
+        </div>
+      </div>
+      <div class="journey-step">
+        <div class="step-card step-left">
+          <span class="step-icon">✨</span>
+          <div class="step-num">Step 05</div>
+          <div class="step-name">With You — &amp; Beyond</div>
+          <p class="step-desc">When you're done, return the piece to us. We repair, re-home, or recycle it — and you earn loyalty points. The circle never ends.</p>
+          <div class="step-loc">📍 Your wardrobe → our recycling programme</div>
+        </div>
+        <div class="step-mid"><div class="step-node">✦</div></div>
+        <div class="step-card step-right step-empty"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT TRACKER -->
+  <div class="tracker-section reveal">
+    <div class="tracker-title">Trace Your <em>Order</em></div>
+    <select class="tracker-select" id="tracker-product" onchange="showTracker()">
+      <option value="">— Select a product to trace —</option>
+      <option value="glass">👠 Moonlight Ballet Flat</option>
+      <option value="gold">🌸 Blossom Crown Headpiece</option>
+      <option value="story">🧥 Velvet Dusk Blazer</option>
+      <option value="gem">💍 Starfall Pendant Necklace</option>
+    </select>
+    <div class="tracker-result" id="tracker-result">
+      <div class="chain-steps" id="tracker-steps"></div>
+    </div>
+  </div>
+
+</div>
+
+<div id="app-footer"></div>
+<script src="../js/main.js"></script>
+<script src="../js/nav-template.js"></script>
+<script src="../js/products-data.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => { injectNav(); injectFooter(); });
+
+const TRACES = {
+  glass: [
+    {icon:'🍶',label:'PET Bottles Collected',detail:'Kochi, India · 8 bottles/shoe',status:'done'},
+    {icon:'🧵',label:'Fibre Processing',detail:'Mumbai mill · GRS certified',status:'done'},
+    {icon:'✂️',label:'Cutting & Construction',detail:'Jaipur cooperative',status:'done'},
+    {icon:'🔍',label:'Quality Check',detail:'OEKO-TEX tested',status:'done'},
+    {icon:'📦',label:'Packaged',detail:'London hub · plastic-free',status:'active'},
+    {icon:'🚚',label:'In Transit',detail:'DPD Green · carbon neutral',status:'pending'},
+  ],
+  gold: [
+    {icon:'🪡',label:'Silk Offcuts Sourced',detail:'Kyoto deadstock mills',status:'done'},
+    {icon:'⚙️',label:'Wire Frame Formed',detail:'Recycled brass — Porto',status:'done'},
+    {icon:'🌸',label:'Hand Assembly',detail:'Artisan cooperative, Porto',status:'done'},
+    {icon:'📦',label:'Packaged',detail:'London hub',status:'active'},
+    {icon:'🚚',label:'Dispatched',detail:'Carbon-neutral delivery',status:'pending'},
+  ],
+  story: [
+    {icon:'👗',label:'Vintage Velvet Rescued',detail:'London deadstock warehouse',status:'done'},
+    {icon:'🌿',label:'Natural Re-Dyeing',detail:'Plant-based indigo, Portugal',status:'done'},
+    {icon:'✂️',label:'Zero-waste Cutting',detail:'Lisbon atelier',status:'done'},
+    {icon:'🪡',label:'Organic Lining Added',detail:'GOTS cotton',status:'done'},
+    {icon:'📦',label:'Packaged',detail:'FSC kraft, compostable',status:'active'},
+    {icon:'🚚',label:'In Transit',detail:'DPD Green',status:'pending'},
+  ],
+  gem: [
+    {icon:'💿',label:'Silver Reclaimed',detail:'Post-industrial silver, Italy',status:'done'},
+    {icon:'💎',label:'Stone Verified',detail:'RJC conflict-free cert',status:'done'},
+    {icon:'🔨',label:'Bench-Set by Hand',detail:'Milan jeweller',status:'done'},
+    {icon:'📦',label:'Packaged',detail:'Recycled velvet box',status:'active'},
+    {icon:'🚚',label:'In Transit',detail:'Tracked, insured',status:'pending'},
+  ]
+};
+
+function showTracker() {
+  const v = document.getElementById('tracker-product').value;
+  const result = document.getElementById('tracker-result');
+  if (!v) { result.classList.remove('visible'); return; }
+  result.classList.add('visible');
+  const steps = TRACES[v];
+  document.getElementById('tracker-steps').innerHTML = steps.map(s => `
+    <div class="chain-step ${s.status}">
+      <div class="chain-step-icon">${s.icon}</div>
+      <div class="chain-step-label">${s.label}</div>
+      <div class="chain-step-detail">${s.detail}</div>
+    </div>`).join('');
+}
+</script>
+</body>
+</html>

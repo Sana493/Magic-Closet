@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rewards — Magic Closet</title>
+<link rel="stylesheet" href="../css/base.css"/>
+<link rel="stylesheet" href="../css/nav.css"/>
+<style>
+.page-hero { padding:140px 3% 60px;text-align:center;background:linear-gradient(135deg,var(--ink),#4a2d6a);color:#fff; }
+.page-hero .section-eyebrow { color:var(--rose); }
+.page-hero h1 { color:#fff; }
+.rewards-wrap { max-width:1100px;margin:0 auto;padding:60px 3% 100px; }
+.loyalty-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:60px; }
+.loyalty-card { background:#fff;border-radius:20px;padding:28px 20px;text-align:center;box-shadow:var(--shadow-sm);transition:transform .35s var(--ease-spring);position:relative;overflow:hidden; }
+.loyalty-card:hover { transform:translateY(-7px); }
+.loyalty-card.featured { background:linear-gradient(145deg,var(--violet),#c17aab);color:#fff; }
+.loyalty-card.current  { border:2px solid var(--violet); }
+.current-badge { position:absolute;top:12px;right:12px;background:var(--violet);color:#fff;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:6px; }
+.l-crown { font-size:2.4rem;display:block;margin-bottom:12px;animation:floatEm 4s ease-in-out infinite; }
+.l-tier  { font-family:'Cormorant Garamond',serif;font-size:1.25rem;margin-bottom:5px; }
+.l-pts   { font-size:.7rem;opacity:.65;margin-bottom:14px; }
+.l-perks { list-style:none; }
+.l-perks li { font-size:.77rem;padding:5px 0;border-top:1px solid rgba(45,30,58,.06);opacity:.75; }
+.featured .l-perks li { border-top-color:rgba(255,255,255,.15);opacity:.9; }
+/* Points history */
+.history-section { background:white;border-radius:24px;padding:36px;box-shadow:var(--shadow-sm);margin-bottom:40px; }
+.history-section h2 { font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:24px; }
+.history-row { display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid rgba(45,30,58,.05); }
+.hist-icon { width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0; }
+.hist-desc { flex:1;font-size:.85rem; }
+.hist-date { font-size:.72rem;opacity:.5;margin-top:2px; }
+.hist-pts  { font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600; }
+.hist-pts.earn { color:var(--sage-deep); }
+.hist-pts.spend{ color:var(--rose-deep); }
+/* Redeem */
+.redeem-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:40px; }
+.redeem-card { background:white;border-radius:18px;padding:24px;box-shadow:var(--shadow-sm);text-align:center;transition:transform .3s; }
+.redeem-card:hover { transform:translateY(-5px); }
+.redeem-icon  { font-size:2.5rem;margin-bottom:10px;display:block; }
+.redeem-name  { font-family:'Cormorant Garamond',serif;font-size:1rem;margin-bottom:6px; }
+.redeem-cost  { font-size:.8rem;color:var(--violet);font-weight:500;margin-bottom:14px; }
+.redeem-btn   { width:100%;padding:9px;border-radius:30px;border:1.5px solid var(--violet);background:transparent;color:var(--violet);font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.08em;cursor:pointer;transition:all .25s; }
+.redeem-btn:hover { background:var(--violet);color:#fff; }
+@media(max-width:760px){ .loyalty-grid,.redeem-grid { grid-template-columns:1fr 1fr; } }
+@media(max-width:480px){ .loyalty-grid,.redeem-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-ring"></div>
+<div id="particles"></div>
+<div class="toast" id="toast"></div>
+<div id="app-nav"></div>
+
+<div class="page-hero">
+  <span class="section-eyebrow">The Enchanted Rewards Club</span>
+  <h1 class="section-title" style="color:#fff;">Your <em style="color:var(--rose);">Magical</em> Journey</h1>
+  <div class="section-div"></div>
+  <p style="max-width:480px;margin:20px auto 0;font-size:.95rem;opacity:.65;line-height:1.75;">Shop, recycle, share — and watch your petals bloom into extraordinary rewards.</p>
+</div>
+
+<div class="rewards-wrap">
+  <!-- Tier Cards -->
+  <div class="section-hdr reveal">
+    <span class="section-eyebrow">Tier System</span>
+    <h2 class="section-title">Four <em>Enchanted</em> Levels</h2>
+    <div class="section-div"></div>
+  </div>
+  <div class="loyalty-grid">
+    <div class="loyalty-card current reveal">
+      <span class="current-badge">Your Tier</span>
+      <span class="l-crown">🌸</span><div class="l-tier">Blossom</div><div class="l-pts">0–500 petals</div>
+      <ul class="l-perks"><li>Early sale access</li><li>Birthday surprise</li><li>Eco newsletter</li><li>5% recycling bonus</li></ul>
+    </div>
+    <div class="loyalty-card reveal">
+      <span class="l-crown">🌙</span><div class="l-tier">Moonbeam</div><div class="l-pts">501–1,500 petals</div>
+      <ul class="l-perks"><li>Free shipping always</li><li>10% recycling bonus</li><li>Styling sessions</li><li>48hr early access</li></ul>
+    </div>
+    <div class="loyalty-card featured reveal">
+      <span class="l-crown">⭐</span><div class="l-tier">Stardust</div><div class="l-pts">1,501–5,000 petals</div>
+      <ul class="l-perks"><li>20% on all orders</li><li>AR try-on early access</li><li>VIP collection drops</li><li>Artisan meet &amp; greet</li></ul>
+    </div>
+    <div class="loyalty-card reveal">
+      <span class="l-crown">✨</span><div class="l-tier">Enchanted</div><div class="l-pts">5,001+ petals</div>
+      <ul class="l-perks"><li>Custom bespoke pieces</li><li>Co-design collections</li><li>Lifetime free returns</li><li>Annual fairy tale gift</li></ul>
+    </div>
+  </div>
+
+  <!-- Redeem Rewards -->
+  <div class="section-hdr reveal">
+    <span class="section-eyebrow">Use Your Petals</span>
+    <h2 class="section-title">Redeem <em>Rewards</em></h2>
+    <div class="section-div"></div>
+  </div>
+  <div class="redeem-grid">
+    <div class="redeem-card reveal"><span class="redeem-icon">🏷️</span><div class="redeem-name">£5 Discount</div><div class="redeem-cost">100 petals</div><button class="redeem-btn" onclick="redeem('£5 discount',100)">Redeem</button></div>
+    <div class="redeem-card reveal"><span class="redeem-icon">🚚</span><div class="redeem-name">Free Shipping</div><div class="redeem-cost">50 petals</div><button class="redeem-btn" onclick="redeem('Free shipping',50)">Redeem</button></div>
+    <div class="redeem-card reveal"><span class="redeem-icon">🌸</span><div class="redeem-name">Mystery Gift</div><div class="redeem-cost">250 petals</div><button class="redeem-btn" onclick="redeem('Mystery gift',250)">Redeem</button></div>
+    <div class="redeem-card reveal"><span class="redeem-icon">🌿</span><div class="redeem-name">Plant 10 Trees</div><div class="redeem-cost">75 petals</div><button class="redeem-btn" onclick="redeem('Tree planting',75)">Redeem</button></div>
+    <div class="redeem-card reveal"><span class="redeem-icon">✂️</span><div class="redeem-name">Repair Service</div><div class="redeem-cost">200 petals</div><button class="redeem-btn" onclick="redeem('Repair service',200)">Redeem</button></div>
+    <div class="redeem-card reveal"><span class="redeem-icon">💎</span><div class="redeem-name">Bespoke Piece</div><div class="redeem-cost">1000 petals</div><button class="redeem-btn" onclick="redeem('Bespoke piece',1000)">Redeem</button></div>
+  </div>
+
+  <!-- Points History -->
+  <div class="history-section reveal">
+    <h2>Petals <em>History</em></h2>
+    <div id="pts-history"></div>
+  </div>
+</div>
+
+<div id="app-footer"></div>
+<script src="../js/main.js"></script>
+<script src="../js/nav-template.js"></script>
+<script src="../js/products-data.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  injectNav(); injectFooter();
+  renderHistory();
+});
+
+const HISTORY = [
+  {icon:'🌸',bg:'#e4f5e8',desc:'Recycling return — 3 items',date:'2 days ago',pts:'+180',type:'earn'},
+  {icon:'🛍️',bg:'#e8dff5',desc:'Purchase: Blossom Crown',date:'1 week ago',pts:'+22',type:'earn'},
+  {icon:'🏷️',bg:'#fde8f0',desc:'Redeemed: £5 discount',date:'2 weeks ago',pts:'-100',type:'spend'},
+  {icon:'🌱',bg:'#e4f5e8',desc:'Welcome bonus',date:'3 weeks ago',pts:'+50',type:'earn'},
+];
+
+function renderHistory() {
+  document.getElementById('pts-history').innerHTML = HISTORY.map(h=>`
+    <div class="history-row">
+      <div class="hist-icon" style="background:${h.bg};">${h.icon}</div>
+      <div class="hist-desc">
+        <div>${h.desc}</div>
+        <div class="hist-date">${h.date}</div>
+      </div>
+      <div class="hist-pts ${h.type}">${h.pts} 🌸</div>
+    </div>`).join('');
+}
+
+function redeem(name, cost) {
+  const pts = parseInt(localStorage.getItem('mc_pts')||'0');
+  if (pts < cost) { showToast(`🌸 You need ${cost} petals. You have ${pts}.`); return; }
+  localStorage.setItem('mc_pts', pts - cost);
+  showToast(`✨ ${name} redeemed! Enjoy your reward 🌸`);
+}
+</script>
+</body>
+</html>
