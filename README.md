@@ -1,4 +1,4 @@
-# Magic-Closet# Magic Closet ✨
+# Magic Closet ✨
 
 **Enchanted Sustainable Fashion** by Sana & Aditi
 
