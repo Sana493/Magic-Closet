@@ -575,6 +575,134 @@ section{position:relative;z-index:1}
 .s-step .si{font-size:1.7rem;display:block;margin-bottom:.4rem}
 .s-step h5{font-family:'Playfair Display',serif;font-size:.82rem;color:var(--violet-deep);margin-bottom:.2rem}
 .s-step p{font-size:.73rem;color:var(--text-soft)}
+   /* ARTISANS SECTION */
+.artisan-sec {
+  position: relative; z-index: 2;
+  padding: 6rem 3rem;
+  background: linear-gradient(160deg, rgba(184,221,208,.18) 0%, rgba(245,233,204,.15) 50%, rgba(212,184,224,.12) 100%);
+  border-top: 1px solid rgba(184,221,208,.4);
+  border-bottom: 1px solid rgba(201,168,76,.2);
+}
+.artisan-intro { max-width: 680px; margin: 0 auto 3rem; text-align: center; font-size: 1.1rem; color: var(--text-mid); line-height: 1.9; font-weight: 300; }
+.pledge-pills { display: flex; flex-wrap: wrap; gap: .9rem; justify-content: center; margin-bottom: 3rem; }
+.pledge-pill { display: flex; align-items: center; gap: .6rem; background: white; border: 1px solid rgba(184,221,208,.5); border-radius: 50px; padding: .55rem 1.1rem; font-size: .88rem; color: var(--text-mid); }
+.pledge-icon { font-size: 1rem; }
+.artisan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 0 auto 3.5rem; }
+.artisan-card { background: rgba(255,255,255,.8); border: 1px solid rgba(212,184,224,.3); border-radius: 24px; padding: 1.8rem 1.6rem; transition: transform .3s, box-shadow .3s; position: relative; overflow: hidden; }
+.artisan-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; border-radius: 24px 24px 0 0; }
+.artisan-card.ac-gold::before { background: linear-gradient(90deg, #c9a84c, #e8d5a8); }
+.artisan-card.ac-mint::before { background: linear-gradient(90deg, #5db89a, #b8ddd0); }
+.artisan-card.ac-lilac::before { background: linear-gradient(90deg, #a87ec8, #d4b8e0); }
+.artisan-card.ac-rose::before  { background: linear-gradient(90deg, #d48fa0, #f2c4ce); }
+.artisan-card:hover { transform: translateY(-6px); box-shadow: 0 16px 45px rgba(168,126,200,.15); }
+.artisan-avatar { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: .9rem; }
+.av-gold  { background: #f5e9cc; }
+.av-mint  { background: #e0f2ec; }
+.av-lilac { background: #f0e5f8; }
+.av-rose  { background: #fbe8ed; }
+.artisan-name { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 500; color: #3a2438; margin-bottom: .15rem; }
+.artisan-role { font-size: .7rem; letter-spacing: 2px; text-transform: uppercase; color: #b89aaa; margin-bottom: .6rem; }
+.artisan-location { font-size: .85rem; color: #7a5a6e; margin-bottom: .8rem; }
+.artisan-quote { font-size: .95rem; color: #7a5a6e; line-height: 1.7; font-weight: 300; font-style: italic; border-left: 2px solid rgba(201,168,76,.4); padding-left: .85rem; }
+.artisan-tag { display: inline-block; margin-top: .9rem; font-size: .68rem; letter-spacing: 1px; text-transform: uppercase; padding: .22rem .72rem; border-radius: 50px; }
+.atag-gold  { background: #f5e9cc; color: #8a6a1a; }
+.atag-mint  { background: #e0f2ec; color: #2a6a52; }
+.atag-lilac { background: #f0e5f8; color: #a87ec8; }
+.atag-rose  { background: #fbe8ed; color: #d48fa0; }
+.artisan-values { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1.2rem; max-width: 900px; margin: 0 auto; }
+.aval-item { text-align: center; padding: 1.4rem 1rem; background: rgba(255,255,255,.6); border: 1px solid rgba(212,184,224,.25); border-radius: 18px; }
+.aval-icon  { font-size: 1.7rem; display: block; margin-bottom: .4rem; }
+.aval-title { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 500; color: #3a2438; margin-bottom: .25rem; }
+.aval-desc  { font-size: .85rem; color: #7a5a6e; line-height: 1.6; font-weight: 300; }
+   <!-- ARTISANS -->
+<section class="artisan-sec" id="artisans">
+
+  <div style="text-align:center;margin-bottom:3rem;">
+    <span style="font-family:'Great Vibes',cursive;font-size:1.4rem;color:#d48fa0;display:block;margin-bottom:.4rem;">The Hands Behind the Magic</span>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:300;color:#3a2438;">Our <em style="font-style:italic;color:#a87ec8;">Artisan</em> Partners</h2>
+  </div>
+
+  <div class="artisan-intro">
+    <p>Magic Closet will be built on a foundation of human skill and ethical care. Every piece will pass through the hands of carefully chosen artisan partners, selected for their craft expertise, fair labour practices, and shared belief that fashion can be both beautiful and responsible. We plan to work with 60+ artisan partners across independent studios, family-run workshops, and cooperative collectives.</p>
+  </div>
+
+  <div class="pledge-pills">
+    <div class="pledge-pill"><span class="pledge-icon">💰</span>Fair living wages guaranteed</div>
+    <div class="pledge-pill"><span class="pledge-icon">📋</span>Transparent supply chains</div>
+    <div class="pledge-pill"><span class="pledge-icon">🏡</span>Safe working conditions</div>
+    <div class="pledge-pill"><span class="pledge-icon">🌱</span>Eco-conscious production</div>
+    <div class="pledge-pill"><span class="pledge-icon">🤝</span>Long-term partnerships</div>
+    <div class="pledge-pill"><span class="pledge-icon">📖</span>Skills and training support</div>
+  </div>
+
+  <div class="artisan-grid">
+
+    <div class="artisan-card ac-gold">
+      <div class="artisan-avatar av-gold">🪡</div>
+      <div class="artisan-name">The Gilded Loom Collective</div>
+      <div class="artisan-role">Textile Weaving and Knitwear</div>
+      <div class="artisan-location">📍 Oaxaca, Mexico</div>
+      <p class="artisan-quote">"We will bring generations of weaving tradition into every thread, turning discarded yarn into something worth treasuring again."</p>
+      <span class="artisan-tag atag-gold">Golden Thread Muse</span>
+    </div>
+
+    <div class="artisan-card ac-mint">
+      <div class="artisan-avatar av-mint">♻️</div>
+      <div class="artisan-name">Verdant Stitch Studio</div>
+      <div class="artisan-role">Upcycling and Reworking</div>
+      <div class="artisan-location">📍 Porto, Portugal</div>
+      <p class="artisan-quote">"Every garment that arrives at our studio will leave with a new story to tell, and a second life it was always meant to have."</p>
+      <span class="artisan-tag atag-mint">Storykeeper Muse</span>
+    </div>
+
+    <div class="artisan-card ac-lilac">
+      <div class="artisan-avatar av-lilac">💎</div>
+      <div class="artisan-name">Lumina Gem Workshop</div>
+      <div class="artisan-role">Jewelry and Accessories</div>
+      <div class="artisan-location">📍 Jaipur, India</div>
+      <p class="artisan-quote">"Our jewellers will craft each piece by hand, using only recycled metals and ethically traced stones to create something truly timeless."</p>
+      <span class="artisan-tag atag-lilac">Infinite Gem Collection</span>
+    </div>
+
+    <div class="artisan-card ac-rose">
+      <div class="artisan-avatar av-rose">👠</div>
+      <div class="artisan-name">Sole Revival Atelier</div>
+      <div class="artisan-role">Footwear and Cobblers</div>
+      <div class="artisan-location">📍 Florence, Italy</div>
+      <p class="artisan-quote">"We will take reclaimed leathers and salvaged soles and hand-finish every pair so that each shoe feels like it was made for one person alone."</p>
+      <span class="artisan-tag atag-rose">Glass Slipper Muse</span>
+    </div>
+
+  </div>
+
+  <div style="text-align:center;margin-bottom:1.8rem;">
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:300;color:#3a2438;">Our <em style="font-style:italic;color:#a87ec8;">Commitment</em> to Every Maker</h3>
+  </div>
+
+  <div class="artisan-values">
+    <div class="aval-item">
+      <span class="aval-icon">💸</span>
+      <div class="aval-title">Above-Market Pay</div>
+      <div class="aval-desc">Every artisan partner will receive wages that exceed local living standards, always.</div>
+    </div>
+    <div class="aval-item">
+      <span class="aval-icon">🔍</span>
+      <div class="aval-title">Full Transparency</div>
+      <div class="aval-desc">We will publish the name, location, and working conditions of every workshop in our network.</div>
+    </div>
+    <div class="aval-item">
+      <span class="aval-icon">📈</span>
+      <div class="aval-title">Growth Together</div>
+      <div class="aval-desc">A portion of every sale will go directly into skills development and equipment funds for our partners.</div>
+    </div>
+    <div class="aval-item">
+      <span class="aval-icon">🌍</span>
+      <div class="aval-title">Local Materials First</div>
+      <div class="aval-desc">We will prioritise sourcing recycled and reclaimed materials from within each artisan's own region.</div>
+    </div>
+  </div>
+
+</section>
 
 /* ══ RECYCLING GAME ══ */
 #gamify{
